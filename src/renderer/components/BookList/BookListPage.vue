@@ -33,13 +33,12 @@
 </template>
 
 <script>
-import store from "../modules/store";
 import Book from "./Book.vue";
-import BookListMessage from "../modules/BookListMessage";
+import BookListMessage from "@/modules/BookListMessage";
 import SideBar from "./SideBar.vue";
 import RoundButton from "./RoundButton.vue";
 import PublicBookMessage from "./PublicBookMessage.vue";
-import globalBus from "../modules/globalBus";
+import globalBus from "@/modules/globalBus";
 
 export default {
     name: "BookListPage",

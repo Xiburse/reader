@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import BookListMessage from "../modules/BookListMessage"
+import BookListMessage from "@/modules/BookListMessage"
 
 import {
     createPersistedState,

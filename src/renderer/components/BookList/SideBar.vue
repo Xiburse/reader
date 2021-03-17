@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import BookListMessage from "../modules/BookListMessage"
+import BookListMessage from "@/modules/BookListMessage"
 
 export default {
     name: "SideBar",

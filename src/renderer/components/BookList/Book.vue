@@ -3,7 +3,8 @@
          class="bookBox"
          @mouseenter="bookBoxMouseEnter"
          @mouseleave="bookBoxMouseLeave"
-         @click.right="bookBoxClickRight">
+         @click.right="bookBoxClickRight"
+         @click.left="bookBoxClickLeft">
         <img :src="coverPath"
              alt="图片未加载"
              :class="bookCoverClass"
@@ -35,7 +36,7 @@
 <script>
 import { remote } from "electron"
 import ExpandRoundButton from "./ExpandRoundButton.vue"
-import BookListMessage from '../modules/BookListMessage'
+import BookListMessage from '@/modules/BookListMessage'
 
 export default {
     name: "Book",
@@ -51,6 +52,9 @@ export default {
             this.ifExpandRoundButton = false
             this.bookCoverStyle.filter = ""
             this.bookCoverStyle.transform = ""
+        },
+        bookBoxClickLeft: function (e) {
+            this.$router.push({name: "ReadBook", params: {nid: this.nid}})
         },
         bookBoxClickRight: function () {
             this.ifExpandRoundButton = true
@@ -139,8 +143,8 @@ export default {
     display: table;
     top: -100%;
     left: 0%;
-    /* backdrop-filter: saturate(300%) blur(20px); */
-    background-color: rgba(0, 0, 0, 0.342);
+    backdrop-filter: saturate(200%);
+    background-color: rgba(32, 32, 32, 0.815);
     /* transform: scale3d(1.1, 1.1, 1); */
 }
 
