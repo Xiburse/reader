@@ -54,7 +54,7 @@ export default {
             this.bookCoverStyle.transform = ""
         },
         bookBoxClickLeft: function (e) {
-            this.$router.push({name: "ReadBook", params: {nid: this.nid}})
+            this.$router.push({name: "ReadBook", params: {nid: this.nid, list: this.list}})
         },
         bookBoxClickRight: function () {
             this.ifExpandRoundButton = true
