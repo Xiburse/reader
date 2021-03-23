@@ -1,7 +1,21 @@
 <template>
-    <div>
+    <div class="contentBox"
+         :style="contentStyle">
         <div @click.left="contentTitleClickLeft"
-             class="contentTitle">{{list.name}}</div>
+             :class="contentTitleClass"
+             @mouseenter="contentTitleMouseEnter"
+             @mouseleave="contentTitleMouseLeave">
+            <div class="contentTitleBox">
+                <img class="moreBookLogo"
+                     :style="moreBookLogoStyle"
+                     src="static/sideBarButton.svg"
+                     alt="">
+                <div class="contentTitleTextBox"
+                     :style="contentTitleTextBoxStyle">
+                    <div class="contentTitleText">{{list.name}}</div>
+                </div>
+            </div>
+        </div>
         <div class="listBox">
             <contents-child v-for="l in list.navPoint"
                             :list="l"
@@ -21,6 +35,18 @@ export default {
             if (this.isHaveChild) {
                 this.ifListBox = !this.ifListBox
             }
+        },
+        contentTitleMouseEnter: function () {
+            this.contentTitleClass = "contentTitleHover"
+            var rect = this.$el.children[0].getBoundingClientRect()
+            var zoom = 1 - this.level / 10
+            rect.change = true
+
+            this.$store.commit("setMoveBackgroundProp", { "width": rect.width * zoom, "height": rect.height * zoom, "left": rect.left * zoom, "top": rect.top * zoom, "change": !this.$store.state.moveBackgroundProp.change })
+            this.$store.commit("setMoveBackgroundPropIf", true)
+        },
+        contentTitleMouseLeave: function () {
+            this.contentTitleClass = "contentTitle"
         }
     },
     watch: {
@@ -40,6 +66,8 @@ export default {
                     lbe.style.transition = "0.4s"
                     lbe.style.height = l.height + "px"
                 })
+
+                this.moreBookLogoStyle.transform = "rotate(90deg)"
             } else {
                 var lbe = this.listBoxEle
                 requestAnimationFrame(function () {
@@ -47,7 +75,8 @@ export default {
                     listBoxEle.style.transition = "0.4s"
                     listBoxEle.style.height = "0px"
                 })
-                
+
+                this.moreBookLogoStyle.transform = "rotate(0deg)"
             }
         }
     },
@@ -60,7 +89,27 @@ export default {
             isHaveChild: false,
             ifListBox: false,
 
-            listBoxEle: ""
+            listBoxEle: "",
+
+            contentTitleClass: "contentTitle",
+
+            contentStyle: {
+                zoom: "",
+                transform: "",
+                backgroundColor: "rgba(200, 200, 200, " + (0.5 + this.level / 10) + ")",
+                paddingLeft: this.level * 10 + "%"
+            },
+            contentTitleTextBoxStyle: {
+                height: "40px",
+                display: "table-cell",
+                verticalAlign: "middle",
+                overflow: "hidden"
+            },
+
+            moreBookLogoStyle: {
+                transform: "rotate(0deg)",
+                opacity: "1"
+            }
         }
     },
     mounted: function () {
@@ -81,17 +130,32 @@ export default {
     created: function () {
         if (this.list.navPoint.length == 0) {
             this.isHaveChild = false
+            this.moreBookLogoStyle.opacity = "0"
         } else {
             this.isHaveChild = true
         }
+
+        // this.contentStyle.transform = "scale(" + (1 - this.level / 10) + "," + (1 - this.level / 10) + ")"
+        this.contentStyle.zoom = 1 - this.level / 10
     }
 }
 </script>
 
 <style>
+.contentBox {
+    font-family: myFont;
+}
+
 .contentTitle {
     transition: 0.4s;
 }
+.contentTitleHover {
+    transition: 0.4s;
+    /* transform: scale3d(1, 1, 0); */
+    /* background-color: rgba(0, 0, 0, 0.2); */
+    box-shadow: 0px 4px 10px rgba(173, 173, 173, 0.24);
+}
+
 .childListClass {
     transition: 0.4s;
 }
@@ -99,5 +163,21 @@ export default {
 .listBox {
     overflow: hidden;
     height: 0px;
+}
+.moreBookLogo {
+    float: left;
+    width: 20px;
+    height: 20px;
+    margin: 10px 10px 10px 5px;
+    object-fit: cover;
+
+    transition: 0.4s;
+}
+
+.contentTitleText {
+    width: 250px;
+    white-space: nowrap;
+    z-index: 1;
+    /* text-overflow: ellipsis; */
 }
 </style>

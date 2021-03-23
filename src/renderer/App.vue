@@ -40,4 +40,9 @@ body {
 ::-webkit-scrollbar-track {
     background-color: rgba(0, 0, 0, 0.1);
 }
+
+@font-face {
+    font-family: myFont;
+    src: url(字体.ttf);
+}
 </style>

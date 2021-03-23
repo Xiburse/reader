@@ -1,6 +1,10 @@
 <template>
-    <div class="contentsBox">
-        <contents-child v-for="l in list.list" :list="l" :level="0" :key="l.id"></contents-child>
+    <div class="contentsBox"
+         @mouseleave="contentsBoxMouseLeave">
+        <contents-child v-for="l in list.list"
+                        :list="l"
+                        :level="0"
+                        :key="l.id"></contents-child>
     </div>
 </template>
 
@@ -12,7 +16,11 @@ export default {
     components: {
         ContentsChild
     },
-    methods: {},
+    methods: {
+        contentsBoxMouseLeave: function () {
+            this.$store.commit("setMoveBackgroundPropIf", false)
+        }
+    },
     props: {
         list: Object
     },
@@ -29,10 +37,11 @@ export default {
     width: 300px;
     height: 100vh;
 
-    background-color: rgba(255, 255, 255, 0.664);
+    background-color: rgba(200, 200, 200, 0.5);
     backdrop-filter: saturate(2000%) blur(35px);
     box-sizing: border-box;
 
-    background-color: rgb(214, 214, 214);
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 </style>

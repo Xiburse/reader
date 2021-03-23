@@ -25,6 +25,16 @@ export default new Vuex.Store({
             title: "",
             author: "",
             ifShow: false
+        },
+
+        moveBackgroundProp: {
+            width: "0",
+            height: "0",
+            left: "0",
+            top: "0",
+
+            change: false,
+            moveBackgroundIf: false
         }
     },
     mutations: {
@@ -48,6 +58,19 @@ export default new Vuex.Store({
         },
         setPublicBookMessageIfShow(state, ifShow) {
             state.publicBookMessage.ifShow = ifShow
+        },
+
+        setMoveBackgroundProp(state, list) {
+            state.moveBackgroundProp.width = list.width
+            state.moveBackgroundProp.height = list.height
+            state.moveBackgroundProp.left = list.left
+            state.moveBackgroundProp.top = list.top
+
+            state.moveBackgroundProp.change = list.change
+        },
+
+        setMoveBackgroundPropIf(state, bool) {
+            state.moveBackgroundProp.moveBackgroundIf = bool
         }
     }
 })
