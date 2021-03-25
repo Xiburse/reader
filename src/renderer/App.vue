@@ -9,7 +9,7 @@ import store from "./store/index"
 
 export default {
     name: 'epub-reader',
-    created: function () { 
+    created: function () {
         store.commit("init")
     }
 }
@@ -28,7 +28,6 @@ body {
 
 ::-webkit-scrollbar {
     width: 5px;
-    
 }
 ::-webkit-scrollbar-thumb {
     border-radius: 999px;

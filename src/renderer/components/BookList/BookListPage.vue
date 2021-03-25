@@ -1,35 +1,37 @@
 <template>
-    <div class="bookListPageBox">
-        <!-- <button @click="addBookClick">{{message}}</button><br> -->
-        <div @click="roundButtonClick"
-             @mouseenter="roundButtonEnter"
-             @mouseleave="roundButtonLeave">
-            <round-button :class="roundButtonClass"
-                          :style="roundButtonStyle"
-                          :width="buttonWidth"
-                          logoPath="static/sideBarButton.svg"
-                          ref="roundButton"></round-button>
+    <transition name="bookListPageTran" mode="out-in">
+        <div class="bookListPageBox">
+            <!-- <button @click="addBookClick">{{message}}</button><br> -->
+            <div @click="roundButtonClick"
+                 @mouseenter="roundButtonEnter"
+                 @mouseleave="roundButtonLeave">
+                <round-button :class="roundButtonClass"
+                              :style="roundButtonStyle"
+                              :width="buttonWidth"
+                              logoPath="static/sideBarButton.svg"
+                              ref="roundButton"></round-button>
+            </div>
+            <side-bar :class="sideBarClass"
+                      @click.native="sideBarClick"></side-bar>
+            <transition name="publicBookMessageTran"
+                        v-on:after-leave="publicBookMessageTranAfterLeave">
+                <public-book-message class="publicBookMessage"
+                                     v-if="$store.state.publicBookMessage.ifShow"></public-book-message>
+            </transition>
+            <div class="bookListPageTitle">书籍</div>
+            <div>
+                <transition-group name="bookListTran">
+                    <book v-for="list in bookList"
+                          :key="list.id"
+                          :width="bookWidth"
+                          :height="bookHeight"
+                          :nid="list.id"
+                          :list="list"
+                          class="book"></book>
+                </transition-group>
+            </div>
         </div>
-        <side-bar :class="sideBarClass"
-                  @click.native="sideBarClick"></side-bar>
-        <transition name="publicBookMessageTran"
-                    v-on:after-leave="publicBookMessageTranAfterLeave">
-            <public-book-message class="publicBookMessage"
-                                 v-if="$store.state.publicBookMessage.ifShow"></public-book-message>
-        </transition>
-        <div class="bookListPageTitle">书籍</div>
-        <div>
-            <transition-group name="bookListTran">
-                <book v-for="list in bookList"
-                      :key="list.id"
-                      :width="bookWidth"
-                      :height="bookHeight"
-                      :nid="list.id"
-                      :list="list"
-                      class="book"></book>
-            </transition-group>
-        </div>
-    </div>
+    </transition>
 </template>
 
 <script>
@@ -78,7 +80,7 @@ export default {
         },
         roundButtonLeave: function () {
             if (this.ifRoundButtonClick == false) {
-                this.roundButtonStyle.left = -this.buttonWidth / 2 + "px"
+                this.roundButtonStyle.left = (this.buttonWidth / 4 - this.buttonWidth) + "px"
             }
         },
 
@@ -135,14 +137,18 @@ export default {
     },
     mounted: function () {
         this.roundButtonStyle.top = "calc(45vh - " + this.buttonWidth / 2 + "px)"
-        this.roundButtonStyle.left = -this.buttonWidth / 2 + "px"
+        this.roundButtonStyle.left = (this.buttonWidth / 4 - this.buttonWidth) + "px"
     },
 }
 </script>
 
 <style>
 .bookListPageBox {
-    animation: init 0.4s;
+    animation: init .4s cubic-bezier(.01,.94,.28,.98);
+    background-color: rgb(255, 255, 255);
+    position: absolute;
+    top: 0%;
+    left: 0%;
 }
 
 .book {
@@ -190,11 +196,11 @@ export default {
 @keyframes init {
     0% {
         opacity: 0;
-        transform: scale(0.8, 0.8);
+        /* transform: scale(0.8, 0.8); */
     }
     100% {
         opacity: 1;
-        transform: scale(1, 1);
+        /* transform: scale(1, 1); */
     }
 }
 
@@ -226,5 +232,12 @@ export default {
 .publicBookMessageTran-enter-active,
 .publicBookMessageTran-leave-active {
     transition: 0.4s;
+}
+
+.bookListPageTran-enter, .bookListPageTran-leave-to {
+    opacity: 0;
+}
+.bookListPageTran-enter-active, .bookListPageTran-leave-active {
+    transition: .4s cubic-bezier(.01,.94,.28,.98);
 }
 </style>

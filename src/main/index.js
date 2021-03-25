@@ -49,6 +49,7 @@ function createWindow() {
      * Initial window options
      */
     mainWindow = new BrowserWindow({
+        show: false,
         height: 563,
         useContentSize: true,
         width: 1000,
@@ -56,7 +57,8 @@ function createWindow() {
             nodeIntegration: true,
             webSecurity: false,
             experimentalFeatures: true,
-            enableRemoteModule: true
+            enableRemoteModule: true,
+            webviewTag: true
         },
         // transparent: true,
         // frame: false,
@@ -70,20 +72,25 @@ function createWindow() {
         mainWindow = null
     })
 
-    protocol.interceptFileProtocol('file', function(request, callback, next){
+    mainWindow.on('ready-to-show', function () {
+        mainWindow.show()
+    })
+
+    protocol.interceptFileProtocol('file', function (request, callback, next) {
         // console.log('protocol.interceptFileProtocol', request);
         // callback({ statusCode: 400, data: 'Host Not Allowed' });
         // const url = request.url.substr(8);
         // var fPath = `file://${__dirname}/dist/index.html`;
-        var fPath = request.url.substr(8);  // 截取file:///之后的内容，也就是我们需要的
-        if(fPath.indexOf('element-icons') >= 0 && fPath.indexOf('.woff') >= 0) fPath = gElementIconsWoff;
-        if(fPath.indexOf('element-icons') >= 0 && fPath.indexOf('.ttf') >= 0) fPath = gElementIconsTtf;
- 
+        var fPath = request.url.substr(8); // 截取file:///之后的内容，也就是我们需要的
+        if (fPath.indexOf('element-icons') >= 0 && fPath.indexOf('.woff') >= 0) fPath = gElementIconsWoff;
+        if (fPath.indexOf('element-icons') >= 0 && fPath.indexOf('.ttf') >= 0) fPath = gElementIconsTtf;
+
         fPath = path.normalize(fPath);
+        fPath = fPath.split("#")[0];
         console.log('protocol.interceptFileProtocol', fPath)
         callback(fPath);
         return true;
- 
+
     })
 }
 

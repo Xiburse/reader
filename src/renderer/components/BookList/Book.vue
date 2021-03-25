@@ -60,10 +60,12 @@ export default {
             this.ifExpandRoundButton = true
             this.bookCoverStyle.transform = "scale(1.2, 1.2)"
         },
-        deleteBookClick: function () {
+        deleteBookClick: function (e) {
+            e.stopPropagation()
             BookListMessage.deleteBook(this.nid)
         },
-        moreBookClick: function () {
+        moreBookClick: function (e) {
+            e.stopPropagation()
             this.$store.commit("setPublicBookMessage", this.list)
             this.$store.commit("setPublicBookMessageIfShow", true)
             document.body.style.overflow = "hidden"

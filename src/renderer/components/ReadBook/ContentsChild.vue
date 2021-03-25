@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import globalBus from "@/modules/globalBus"
+
 export default {
     name: "ContentsChild",
     components: {},
@@ -35,6 +37,8 @@ export default {
             if (this.isHaveChild) {
                 this.ifListBox = !this.ifListBox
             }
+
+            globalBus.$emit("setIframeSrc", this.list.path)
         },
         contentTitleMouseEnter: function () {
             this.contentTitleClass = "contentTitleHover"
