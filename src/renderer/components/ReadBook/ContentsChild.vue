@@ -1,16 +1,17 @@
 <template>
     <div class="contentBox"
          :style="contentStyle">
-        <div @click.left="contentTitleClickLeft"
-             :class="contentTitleClass"
+        <div :class="contentTitleClass"
              @mouseenter="contentTitleMouseEnter"
              @mouseleave="contentTitleMouseLeave">
             <div class="contentTitleBox">
                 <img class="moreBookLogo"
+                     @click.left="moreBookLogoClickLeft"
                      :style="moreBookLogoStyle"
                      src="static/sideBarButton.svg"
                      alt="">
                 <div class="contentTitleTextBox"
+                     @click.left="contentTitleTextBoxClickLeft"
                      :style="contentTitleTextBoxStyle">
                     <div class="contentTitleText">{{list.name}}</div>
                 </div>
@@ -33,11 +34,12 @@ export default {
     name: "ContentsChild",
     components: {},
     methods: {
-        contentTitleClickLeft: function () {
+        moreBookLogoClickLeft: function () {
             if (this.isHaveChild) {
                 this.ifListBox = !this.ifListBox
             }
-
+        },
+        contentTitleTextBoxClickLeft: function () {
             globalBus.$emit("setIframeSrc", this.list.path)
         },
         contentTitleMouseEnter: function () {

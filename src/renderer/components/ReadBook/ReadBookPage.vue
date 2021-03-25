@@ -4,12 +4,15 @@
             <div class="bookTextPageBox">
                 <webview class="bookTextIframe"
                          :src="iframeSrc"
-                         ref="bookTextIframe"></webview>
+                         ref="bookTextIframe"
+                         nodeintegration></webview>
             </div>
 
             <div class="trigger"
                  @mouseenter="triggerMouseEnter"></div>
             <contents :class="contentsClass"
+                      :nid="nid"
+                      :iframeSrc="iframeSrc"
                       :list="list"
                       @mouseleave.native="contentsMouseLeave"></contents>
             <move-background style="pointer-events:none"></move-background>
@@ -22,6 +25,7 @@ import globalBus from "@/modules/globalBus"
 import { remote } from "electron"
 import Contents from "./Contents.vue"
 import MoveBackground from "../MoveBackground.vue"
+import UpdateReadingBook from "@/modules/UpdateReadingBook"
 
 export default {
     name: "ReadBookPage",
@@ -75,8 +79,10 @@ export default {
         })
 
         const bti = this.$refs.bookTextIframe
-        bti.addEventListener("dom-ready", function () {
+
+        bti.addEventListener("load-commit", function () {
             var b = bti
+
             b.insertCSS(`
             ::-webkit-scrollbar {
                 width: 5px;
@@ -109,6 +115,39 @@ export default {
             }
         `)
         })
+
+        bti.addEventListener("dom-ready", function () {
+            var b = bti
+            // b.openDevTools()
+
+            b.executeJavaScript(`
+                const remote = require("electron").remote;
+                window.addEventListener("scroll", function () {
+                    var re = remote;
+                    var scrollTop = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
+                    var scrollHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+                    var b = scrollTop / scrollHeight;
+                    re.getGlobal("iframeOptions").b = b;
+                });
+                if(remote.getGlobal("iframeOptions").ifInit) {
+                    var b = remote.getGlobal("iframeOptions").b;
+                    var scrollTop = b * document.body.scrollHeight;
+                    document.body.scrollTop = document.documentElement.scrollTop = scrollTop;
+                    remote.getGlobal("iframeOptions").ifInit = false
+                }
+            `)
+
+            
+        })
+
+        var list = UpdateReadingBook.getData(this.nid)
+        if (list.src == "null") {
+            UpdateReadingBook.addReadingBook(this.nid, "", 0)
+        } else {
+            remote.getGlobal("iframeOptions").b = list.b
+            remote.getGlobal("iframeOptions").ifInit = true
+            this.iframeSrc = list.src
+        }
 
     }
 }

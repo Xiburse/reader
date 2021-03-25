@@ -11,6 +11,11 @@ global["erPath"] = process.env.USERPROFILE + "\\epub-reader"
 global["cachePath"] = process.env.USERPROFILE + "\\epub-reader\\cache"
 global["optionsPath"] = process.env.USERPROFILE + "\\epub-reader\\options"
 
+global["iframeOptions"] = {
+    b: 0,
+    ifInit: false
+}
+
 fs.stat(global["erPath"], function (err) {
     if (err) {
         fs.mkdir(global["erPath"])
@@ -27,7 +32,15 @@ fs.stat(global["optionsPath"] + "\\bookList.json", function (err) {
     if (err) {
         fs.writeFile(global["optionsPath"] + "\\bookList.json", "{\"bookList\":[]}", {
             encoding: "utf-8"
-        })
+        }, () => {})
+    }
+})
+
+fs.stat(global["optionsPath"] + "\\reading.json", function (err) {
+    if (err) {
+        fs.writeFile(global["optionsPath"] + "\\reading.json", "{\"readingBook\":[]}", {
+            encoding: "utf-8"
+        }, () => {})
     }
 })
 

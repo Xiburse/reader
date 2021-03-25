@@ -18,8 +18,10 @@
 </template>
 
 <script>
+import { remote } from "electron"
 import ContentsChild from "./ContentsChild.vue"
 import ExpandRoundButton from "./ExpandRoundButton.vue"
+import UpdateReadingBook from "@/modules/UpdateReadingBook"
 
 export default {
     name: "Contents",
@@ -32,7 +34,9 @@ export default {
             this.$store.commit("setMoveBackgroundPropIf", false)
         },
         contentsReturnButtonClick: function () {
-            this.$router.push({name: "Page"})
+            UpdateReadingBook.save(this.nid, this.iframeSrc, remote.getGlobal("iframeOptions").b)
+            console.log(remote.getGlobal("iframeOptions").b)
+            this.$router.push({ name: "Page" })
         },
 
         enter: function () {
@@ -40,6 +44,8 @@ export default {
         }
     },
     props: {
+        nid: String,
+        iframeSrc: String,
         list: Object
     },
     data: function () {
