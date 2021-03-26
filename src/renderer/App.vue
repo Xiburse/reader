@@ -107,9 +107,13 @@ export default {
     margin: 0px;
     user-select: none;
 }
+#app {
+    overflow-x: hidden;
+}
 body {
     /* background-color: rgba(255, 255, 255, 0.466);
     backdrop-filter: blur(20px); */
+    overflow-x: hidden;
 }
 
 ::-webkit-scrollbar {

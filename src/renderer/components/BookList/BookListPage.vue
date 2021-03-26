@@ -1,5 +1,6 @@
 <template>
-    <transition name="bookListPageTran" mode="out-in">
+    <transition name="bookListPageTran"
+                mode="out-in">
         <div class="bookListPageBox">
             <!-- <button @click="addBookClick">{{message}}</button><br> -->
             <div @click="roundButtonClick"
@@ -19,17 +20,15 @@
                                      v-if="$store.state.publicBookMessage.ifShow"></public-book-message>
             </transition>
             <div class="bookListPageTitle">书籍</div>
-            <div>
-                <transition-group name="bookListTran">
-                    <book v-for="list in bookList"
-                          :key="list.id"
-                          :width="bookWidth"
-                          :height="bookHeight"
-                          :nid="list.id"
-                          :list="list"
-                          class="book"></book>
-                </transition-group>
-            </div>
+            <transition-group name="bookListTran">
+                <book v-for="list in bookList"
+                      :key="list.id"
+                      :width="bookWidth"
+                      :height="bookHeight"
+                      :nid="list.id"
+                      :list="list"
+                      class="book"></book>
+            </transition-group>
         </div>
     </transition>
 </template>
@@ -144,11 +143,15 @@ export default {
 
 <style>
 .bookListPageBox {
-    animation: init .4s cubic-bezier(.01,.94,.28,.98);
+    animation: init 0.4s cubic-bezier(0.01, 1.44, 0.85, 1.01);
     background-color: rgb(255, 255, 255);
     position: absolute;
+    width: 100vw;
+    height: 100vh;
     top: 0%;
     left: 0%;
+
+    overflow-x: hidden;
 }
 
 .book {
@@ -196,11 +199,11 @@ export default {
 @keyframes init {
     0% {
         opacity: 0;
-        /* transform: scale(0.8, 0.8); */
+        transform: scale(0.9);
     }
     100% {
         opacity: 1;
-        /* transform: scale(1, 1); */
+        transform: none;
     }
 }
 
@@ -234,10 +237,13 @@ export default {
     transition: 0.4s;
 }
 
-.bookListPageTran-enter, .bookListPageTran-leave-to {
+.bookListPageTran-leave-to {
     opacity: 0;
+    transform: scale(0.9);
+    overflow: hidden;
 }
-.bookListPageTran-enter-active, .bookListPageTran-leave-active {
-    transition: .4s cubic-bezier(.01,.94,.28,.98);
+.bookListPageTran-enter-active,
+.bookListPageTran-leave-active {
+    transition: 0.4s cubic-bezier(0.01, 0.94, 0.28, 0.98);
 }
 </style>
