@@ -1,7 +1,8 @@
 import {
     app,
     BrowserWindow,
-    protocol
+    protocol,
+    ipcMain
 } from 'electron'
 import fs from "fs"
 import path from "path"
@@ -63,9 +64,10 @@ function createWindow() {
      */
     mainWindow = new BrowserWindow({
         show: false,
-        height: 563,
         useContentSize: true,
         width: 1000,
+        height: 563,
+        frame: false,
         webPreferences: {
             nodeIntegration: true,
             webSecurity: false,
@@ -87,6 +89,23 @@ function createWindow() {
 
     mainWindow.on('ready-to-show', function () {
         mainWindow.show()
+    })
+
+    mainWindow.on("unmaximize", function () {
+        mainWindow.webContents.send("main-window-unmax")
+    })
+
+    ipcMain.on("window-max", function () {
+        mainWindow.maximize()
+    })
+    ipcMain.on("window-res", function () {
+        mainWindow.unmaximize()
+    })
+    ipcMain.on("window-min", function () {
+        mainWindow.minimize()
+    })
+    ipcMain.on("window-close", function () {
+        mainWindow.close()
     })
 
     protocol.interceptFileProtocol('file', function (request, callback, next) {
