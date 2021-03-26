@@ -1,6 +1,6 @@
 # reader
 
-> An electron-vue project
+> 一个能阅读epub的小说阅读器，基于electron + vue实现
 
 #### Build Setup
 
