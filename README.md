@@ -1,4 +1,4 @@
-# epub-reader
+# reader
 
 > An electron-vue project
 
