@@ -5,25 +5,32 @@
                   @mouseenter="closeWindowMouseEnter"
                   @mouseleave="closeWindowMouseLeave"
                   @click.left="closeWindowMouseClickLeft">
-                <img :class="closeWindowLogoClass"
-                     :src="closeWindowLogoSrc"
-                     alt="">
+                <transition name="toolButtonsTran">
+                    <img :class="closeWindowLogoClass"
+                         :src="closeWindowLogoSrc"
+                         v-show="closeWindowIf">
+                </transition>
+
             </span>
             <span class="maxWindow"
                   @mouseenter="maxWindowMouseEnter"
                   @mouseleave="maxWindowMouseLeave"
                   @click.left="maxWindowMouseClickLeft">
-                <img :class="maxWindowLogoClass"
-                     :src="maxWindowLogoSrc"
-                     alt="">
+                <transition name="toolButtonsTran">
+                    <img :class="maxWindowLogoClass"
+                         :src="maxWindowLogoSrc"
+                         v-show="maxWindowIf">
+                </transition>
             </span>
             <span class="hiddenWindow"
                   @mouseenter="hiddenWindowMouseEnter"
                   @mouseleave="hiddenWindowMouseLeave"
                   @click.left="hiddenWindowMouseClickLeft">
-                <img :class="hiddenWindowLogoClass"
-                     :src="hiddenWindowLogoSrc"
-                     alt="">
+                <transition name="toolButtonsTran">
+                    <img :class="hiddenWindowLogoClass"
+                         :src="hiddenWindowLogoSrc"
+                         v-show="hiddenWindowIf">
+                </transition>
             </span>
         </div>
         <router-view ref="main"></router-view>
@@ -39,9 +46,17 @@ export default {
     methods: {
         closeWindowMouseEnter: function () {
             this.closeWindowLogoClass = "closeWindowLogoHover"
+            this.closeWindowIf = true
+            this.closeWindowIfEnter = true
         },
         closeWindowMouseLeave: function () {
             this.closeWindowLogoClass = "closeWindowLogo"
+            this.closeWindowIfEnter = false
+            setTimeout(() => {
+                if(!this.closeWindowIfEnter) {
+                    this.closeWindowIf = false
+                }
+            }, 3000);
         },
         closeWindowMouseClickLeft: function () {
             ipcRenderer.send("window-close")
@@ -49,9 +64,17 @@ export default {
 
         maxWindowMouseEnter: function () {
             this.maxWindowLogoClass = "maxWindowLogoHover"
+            this.maxWindowIf = true
+            this.maxWindowIfEnter = true
         },
         maxWindowMouseLeave: function () {
             this.maxWindowLogoClass = "maxWindowLogo"
+            this.maxWindowIfEnter = false
+            setTimeout(() => {
+                if(!this.maxWindowIfEnter) {
+                    this.maxWindowIf = false
+                }
+            }, 3000);
         },
         maxWindowMouseClickLeft: function () {
             if (this.ifMax) {
@@ -67,9 +90,17 @@ export default {
 
         hiddenWindowMouseEnter: function () {
             this.hiddenWindowLogoClass = "hiddenWindowLogoHover"
+            this.hiddenWindowIf = true
+            this.hiddenWindowIfEnter = true
         },
         hiddenWindowMouseLeave: function () {
             this.hiddenWindowLogoClass = "hiddenWindowLogo"
+            this.hiddenWindowIfEnter = false
+            setTimeout(() => {
+                if(!this.hiddenWindowIfEnter) {
+                    this.hiddenWindowIf = false
+                }
+            }, 3000);
         },
         hiddenWindowMouseClickLeft: function () {
             ipcRenderer.send("window-min")
@@ -79,13 +110,19 @@ export default {
         return {
             closeWindowLogoClass: "closeWindowLogo",
             closeWindowLogoSrc: "static/delete.svg",
+            closeWindowIf: false,
+            closeWindowIfEnter: false,
 
             maxWindowLogoClass: "maxWindowLogo",
             maxWindowLogoSrc: "static/maximize.svg",
             ifMax: false,
+            maxWindowIf: false,
+            maxWindowIfEnter: false,
 
             hiddenWindowLogoClass: "hiddenWindowLogo",
-            hiddenWindowLogoSrc: "static/hidden.svg"
+            hiddenWindowLogoSrc: "static/hidden.svg",
+            hiddenWindowIf: false,
+            hiddenWindowIfEnter: false
         }
     },
     created: function () {
@@ -197,5 +234,14 @@ body {
 .maxWindowLogoHover {
 }
 .hiddenWindowLogoHover {
+}
+
+.toolButtonsTran-enter,
+.toolButtonsTran-leave-to {
+    opacity: 0;
+}
+.toolButtonsTran-enter-active,
+.toolButtonsTran-leave-active {
+    transition: opacity 0.4s;
 }
 </style>
