@@ -1,4 +1,4 @@
-# reader
+# reader v1.0.1
 
 > 一个能阅读epub的小说阅读器，基于electron + vue实现
 
