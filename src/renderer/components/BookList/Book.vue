@@ -36,8 +36,10 @@
         <div class="aboutTextBox"
              :style="aboutTextBoxStyle"
              v-if="ifVertical">
-            <div class="titleTextBox" :style="titleTextBoxStyle">{{list.title}}</div>
-            <div class="authorTextBox" :style="authorTextBoxStyle">{{list.author}}</div>
+            <div class="titleTextBox"
+                 :style="titleTextBoxStyle">{{list.title}}</div>
+            <div class="authorTextBox"
+                 :style="authorTextBoxStyle">{{list.author}}</div>
         </div>
     </div>
 </template>
@@ -136,8 +138,8 @@ export default {
 
 <style>
 .bookBox {
-    transition: 0.4s;
-    font-family: "等线";
+    transition: 0.4s cubic-bezier(0.21, 0, 0.09, 1);
+    font-family: "fc", "qk";
     font-size: 0.85em;
     font-weight: lighter;
     color: rgba(255, 255, 255, 0.884);
@@ -147,7 +149,7 @@ export default {
 }
 
 .bookBox:hover {
-    transition: 0.4s;
+    transition: 0.4s cubic-bezier(0.21, 0, 0.09, 1);
     transform: scale3d(1.05, 1.05, 1);
 }
 
@@ -215,6 +217,7 @@ export default {
 .expandRoundButtonTran-enter-active .moreBookClass,
 .expandRoundButtonTran-enter-active .deleteBookClass {
     transition: 0.8s cubic-bezier(0.03, 0.98, 0.22, 0.99);
+    /* transition: 0.8s cubic-bezier(0.61, 0.01, 0, 1.01); */
 }
 .expandRoundButtonTran-leave-active,
 .expandRoundButtonTran-leave-active .moreBookClass,

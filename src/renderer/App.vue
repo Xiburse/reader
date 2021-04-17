@@ -140,6 +140,15 @@ export default {
 
 <style>
 /* CSS */
+@font-face {
+    font-family: "qk";
+    src: url(./assets/qk.ttf);
+}
+@font-face {
+    font-family: "fc";
+    src: url(./assets/fc.ttf);
+}
+
 * {
     margin: 0px;
     user-select: none;
@@ -165,11 +174,6 @@ body {
 }
 ::-webkit-scrollbar-track {
     background-color: rgba(0, 0, 0, 0.1);
-}
-
-@font-face {
-    font-family: myFont;
-    src: url(./assets/字体.ttf);
 }
 
 .toolButtons {

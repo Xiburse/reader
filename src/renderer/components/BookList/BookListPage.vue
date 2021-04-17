@@ -61,7 +61,7 @@ export default {
                 this.ifRoundButtonClick = false;
                 this.sideBarClass = "sideBarHidden";
                 this.roundButtonStyle.top = "calc(45vh - " + this.buttonWidth / 2 + "px)"
-                this.roundButtonStyle.left = -this.buttonWidth / 2 + "px"
+                this.roundButtonStyle.left = (this.buttonWidth / 4 - this.buttonWidth) + "px"
             } else {
                 this.ifRoundButtonClick = true;
                 this.sideBarClass = "sideBar";
@@ -182,7 +182,8 @@ export default {
     box-shadow: 5px 0px 40px rgba(192, 192, 192, 0.308);
 
     z-index: 999;
-    transition: 0.6s cubic-bezier(0.14, 0.98, 0.3, 1);
+    /* transition: 0.6s cubic-bezier(0.14, 0.98, 0.3, 1); */
+    transition: 0.6s cubic-bezier(0.61, 0.01, 0, 1.01);
     overflow: hidden;
 }
 .sideBarHidden {
@@ -192,18 +193,18 @@ export default {
 .roundButton {
     position: fixed;
 
-    transition: 0.4s;
+    transition: .4s cubic-bezier(0.8, 0.01, 0.49, 1);
     z-index: 1000;
 }
 
 .bookListPageTitle {
-    font-family: "仿宋";
+    font-family: "fc", "qk";
     font-weight: 900;
     font-size: 10vh;
     color: rgba(48, 48, 48, 0.795);
     text-shadow: 2px 2px 10px rgba(196, 196, 196, 0.582);
 
-    margin: 5vh auto 10vh 2vw;
+    margin: 5vh auto 10vh 8vw;
 }
 
 @keyframes init {

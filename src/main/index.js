@@ -75,10 +75,12 @@ function createWindow() {
             enableRemoteModule: true,
             webviewTag: true
         },
+
         // transparent: true,
         // frame: false,
         // backgroundColor: '#00000000'
     })
+    mainWindow.webContents.openDevTools()
 
     mainWindow.setMenu(null)
     mainWindow.loadURL(winURL)

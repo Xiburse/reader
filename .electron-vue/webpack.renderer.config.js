@@ -147,8 +147,7 @@ let rendererConfig = {
                 };
             },
             nodeModules: process.env.NODE_ENV !== 'production' ?
-                path.resolve(__dirname, '../node_modules') :
-                false
+                path.resolve(__dirname, '../node_modules') : false
         }),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoEmitOnErrorsPlugin()
@@ -188,10 +187,11 @@ if (process.env.NODE_ENV === 'production') {
     rendererConfig.plugins.push(
         new MinifyPlugin(),
         new CopyWebpackPlugin([{
-            from: path.join(__dirname, '../static'),
-            to: path.join(__dirname, '../dist/electron/static'),
-            ignore: ['.*']
-        }]),
+                from: path.join(__dirname, '../static'),
+                to: path.join(__dirname, '../dist/electron/static'),
+                ignore: ['.*']
+            }
+        ]),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': '"production"'
         }),
