@@ -27,7 +27,9 @@
                       :height="bookHeight"
                       :nid="list.id"
                       :list="list"
-                      class="book"></book>
+                      class="book"
+                      :style="bookStyle"
+                      :ifVertical="ifVertical"></book>
             </transition-group>
         </div>
     </transition>
@@ -112,8 +114,14 @@ export default {
                 transform: "",
             },
             ifRoundButtonClick: false,
-            bookWidth: 150,
-            bookHeight: 200
+            bookWidth: 120,
+            bookHeight: 170,
+
+            ifVertical: true,
+
+            bookStyle: {
+                margin: ""
+            }
         };
     },
     created: function () {
@@ -133,6 +141,8 @@ export default {
                 _this.$refs.roundButton.buttonClick()
             }
         }
+
+        this.bookStyle.margin = this.ifVertical ? "30px 11vw 30px 9vw" : "30px 20px 30px 20px"
     },
     mounted: function () {
         this.roundButtonStyle.top = "calc(45vh - " + this.buttonWidth / 2 + "px)"
@@ -155,12 +165,12 @@ export default {
 }
 
 .book {
-    margin: 20px;
-    box-shadow: 0px 4px 20px rgba(95, 95, 95, 0.384);
+    margin: 30px 20px 30px 20px;
+    /* box-shadow: 0px 4px 20px rgba(95, 95, 95, 0.384); */
 }
 
 .book:hover {
-    box-shadow: 0px 4px 40px rgba(63, 63, 63, 0.452);
+    /* box-shadow: 0px 4px 40px rgba(63, 63, 63, 0.452); */
 }
 
 .sideBar,
@@ -193,7 +203,7 @@ export default {
     color: rgba(48, 48, 48, 0.795);
     text-shadow: 2px 2px 10px rgba(196, 196, 196, 0.582);
 
-    margin: 3vh auto 8vh 2vw;
+    margin: 5vh auto 10vh 2vw;
 }
 
 @keyframes init {

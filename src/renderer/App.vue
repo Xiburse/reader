@@ -56,7 +56,7 @@ export default {
                 if(!this.closeWindowIfEnter) {
                     this.closeWindowIf = false
                 }
-            }, 3000);
+            }, 2000);
         },
         closeWindowMouseClickLeft: function () {
             ipcRenderer.send("window-close")
@@ -74,7 +74,7 @@ export default {
                 if(!this.maxWindowIfEnter) {
                     this.maxWindowIf = false
                 }
-            }, 3000);
+            }, 2000);
         },
         maxWindowMouseClickLeft: function () {
             if (this.ifMax) {
@@ -100,7 +100,7 @@ export default {
                 if(!this.hiddenWindowIfEnter) {
                     this.hiddenWindowIf = false
                 }
-            }, 3000);
+            }, 2000);
         },
         hiddenWindowMouseClickLeft: function () {
             ipcRenderer.send("window-min")
@@ -169,7 +169,7 @@ body {
 
 @font-face {
     font-family: myFont;
-    src: url(./字体.ttf);
+    src: url(./assets/字体.ttf);
 }
 
 .toolButtons {

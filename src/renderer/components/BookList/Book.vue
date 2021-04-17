@@ -5,31 +5,40 @@
          @mouseleave="bookBoxMouseLeave"
          @click.right="bookBoxClickRight"
          @click.left="bookBoxClickLeft">
-        <img :src="coverPath"
-             alt="图片未加载"
-             :class="bookCoverClass"
-             :style="[bookStyle, bookCoverStyle]"
-             align="middle">
-        <transition name="expandRoundButtonTran">
-            <div class="expandBox"
-                 :style="expandBoxStyle"
-                 v-show="ifExpandRoundButton">
-                <div @click="moreBookClick"
-                     class="moreBookClass">
-                    <expand-round-button :style="expandRoundButtonStyle"
-                                         :width="50"
-                                         expandLogoPath="static/more.svg"
-                                         prop="more"></expand-round-button>
+        <div class="bookCoverBox"
+             :style="bookCoverBoxStyle">
+            <img :src="coverPath"
+                 alt="图片未加载"
+                 :class="bookCoverClass"
+                 :style="[bookStyle, bookCoverStyle]"
+                 align="middle">
+            <transition name="expandRoundButtonTran">
+                <div class="expandBox"
+                     :style="expandBoxStyle"
+                     v-show="ifExpandRoundButton">
+                    <div @click="moreBookClick"
+                         class="moreBookClass">
+                        <expand-round-button :style="expandRoundButtonStyle"
+                                             :width="50"
+                                             expandLogoPath="static/more.svg"
+                                             prop="more"></expand-round-button>
+                    </div>
+                    <div @click="deleteBookClick"
+                         class="deleteBookClass">
+                        <expand-round-button :style="expandRoundButtonStyle"
+                                             :width="50"
+                                             expandLogoPath="static/delete.svg"
+                                             prop="delete"></expand-round-button>
+                    </div>
                 </div>
-                <div @click="deleteBookClick"
-                     class="deleteBookClass">
-                    <expand-round-button :style="expandRoundButtonStyle"
-                                         :width="50"
-                                         expandLogoPath="static/delete.svg"
-                                         prop="delete"></expand-round-button>
-                </div>
-            </div>
-        </transition>
+            </transition>
+        </div>
+        <div class="aboutTextBox"
+             :style="aboutTextBoxStyle"
+             v-if="ifVertical">
+            <div class="titleTextBox" :style="titleTextBoxStyle">{{list.title}}</div>
+            <div class="authorTextBox" :style="authorTextBoxStyle">{{list.author}}</div>
+        </div>
     </div>
 </template>
 
@@ -54,7 +63,7 @@ export default {
             this.bookCoverStyle.transform = ""
         },
         bookBoxClickLeft: function (e) {
-            this.$router.push({name: "ReadBook", params: {nid: this.nid, list: this.list}})
+            this.$router.push({ name: "ReadBook", params: { nid: this.nid, list: this.list } })
         },
         bookBoxClickRight: function () {
             this.ifExpandRoundButton = true
@@ -75,21 +84,29 @@ export default {
         width: Number,
         height: Number,
         nid: String,
-        list: Object
+        list: Object,
+        ifVertical: Boolean
     },
     data: function () {
         return {
             coverPath: remote.getGlobal("cachePath") + "\\" + this.nid + "\\OEBPS\\Images\\cover.jpg",
             bookStyle: {
-                width: this.width + "px",
+                width: this.ifVertical ? "80vw" : this.width + "px",
                 height: this.height + "px",
-                display: "inline-block",
-                overflow: "hidden"
+                display: this.ifVertical ? "block" : "inline-block"
+            },
+            bookCoverBoxStyle: {
+                width: this.width + "px",
+                height: this.height + "px"
             },
             bookCoverClass: "bookCover",
             bookCoverStyle: {
+                width: this.width + "px",
+                height: this.height + "px",
                 filter: "",
-                transform: ""
+                transform: "",
+                float: "left",
+                display: "inline"
             },
             expandBoxStyle: {
                 width: this.width + "px",
@@ -100,7 +117,16 @@ export default {
 
             expandRoundButtonStyle: {
                 margin: "20px auto 20px auto"
-            }
+            },
+
+            aboutTextBoxStyle: {
+                height: this.height + "px",
+                maxWidth: "calc(100vw - 20vw - " + this.width + "px)"
+            },
+            titleTextBoxStyle: {
+                fontSize: this.width / 8 + "px"
+            },
+            authorTextBoxStyle: {}
         }
     },
     created: function () { },
@@ -117,11 +143,24 @@ export default {
     color: rgba(255, 255, 255, 0.884);
     text-align: left;
     letter-spacing: 1px;
+    white-space: nowrap;
 }
 
 .bookBox:hover {
     transition: 0.4s;
     transform: scale3d(1.05, 1.05, 1);
+}
+
+.bookCoverBox {
+    transition: 0.4s;
+    overflow: hidden;
+    display: inline-block;
+    float: left;
+    box-shadow: 0px 4px 20px rgba(95, 95, 95, 0.384);
+}
+.bookCoverBox:hover {
+    transition: 0.4s;
+    box-shadow: 0px 4px 40px rgba(63, 63, 63, 0.452);
 }
 
 .bookCover,
@@ -148,6 +187,28 @@ export default {
     backdrop-filter: saturate(200%);
     background-color: rgba(32, 32, 32, 0.815);
     /* transform: scale3d(1.1, 1.1, 1); */
+}
+
+.aboutTextBox {
+    display: inline-block;
+    float: right;
+    color: black;
+}
+
+.titleTextBox {
+    font-weight: 700;
+    margin: 10px auto 10px 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    direction: rtl;
+}
+.authorTextBox {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: right;
+    margin: 10px auto 10px 10px;
 }
 
 .expandRoundButtonTran-enter-active,
