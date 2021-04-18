@@ -29,7 +29,7 @@ export default {
                 BookListMessage.addBookFromDialog()
             },
             settingsMethod: function () {
-                
+                this.$router.push({name: "Settings"})
             }
         }
     },

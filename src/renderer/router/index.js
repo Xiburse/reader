@@ -20,6 +20,11 @@ export default new Router({
             component: require('@/components/ReadBook/ReadBookPage').default
         },
         {
+            path: '/Settings',
+            name: "Settings",
+            component: require('@/components/Settings/SettingsPage').default
+        },
+        {
             path: '*',
             redirect: '/'
         }

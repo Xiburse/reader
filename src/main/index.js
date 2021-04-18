@@ -80,7 +80,6 @@ function createWindow() {
         // frame: false,
         // backgroundColor: '#00000000'
     })
-    mainWindow.webContents.openDevTools()
 
     mainWindow.setMenu(null)
     mainWindow.loadURL(winURL)
@@ -109,6 +108,10 @@ function createWindow() {
     ipcMain.on("window-close", function () {
         mainWindow.close()
     })
+
+    // mainWindow.on("resize", function () {
+        
+    // })
 
     protocol.interceptFileProtocol('file', function (request, callback, next) {
         // console.log('protocol.interceptFileProtocol', request);

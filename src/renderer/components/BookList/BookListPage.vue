@@ -19,7 +19,7 @@
                 <public-book-message class="publicBookMessage"
                                      v-if="$store.state.publicBookMessage.ifShow"></public-book-message>
             </transition>
-            <div class="bookListPageTitle">书籍</div>
+            <div class="bookListPageTitle">书&nbsp;籍</div>
             <transition-group name="bookListTran">
                 <book v-for="list in bookList"
                       :key="list.id"
