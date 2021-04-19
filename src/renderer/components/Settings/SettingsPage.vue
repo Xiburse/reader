@@ -12,16 +12,31 @@
                                        :style="settingsRoundButtonStyle"
                                        class="settingsRoundButton"></settings-round-button>
             </div>
+            <div class="settingsOptionsBox">
+                <div class="settingsOptionsColumn">
+                    <div class="settingsOptionsColumnTitle">全局设置</div>
+                    <div class="settingsOptionsColumnEntry">
+                        <div class="entryTitle">暗黑模式</div>
+                        <double-button class="doubleButton"
+                                       :height="20"
+                                       :ifClick="ifDoubleButtonClick"
+                                       @click.native="doubleButtonClick"></double-button>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </transition>
 </template>
 <script>
 import SettingsRoundButton from "./SettingsRoundButton.vue"
+import DoubleButton from "../DoubleButton.vue"
 
 export default {
     name: "SettingsPage",
     components: {
-        SettingsRoundButton
+        SettingsRoundButton,
+        DoubleButton
     },
     methods: {
         settingsRoundButtonBoxClick: function () {
@@ -32,6 +47,11 @@ export default {
         },
         settingsRoundButtonBoxLeave: function () {
             this.settingsRoundButtonStyle.left = (70 / 4 - 70) + "px"
+        },
+
+        doubleButtonClick: function () {
+            this.ifDoubleButtonClick = !this.ifDoubleButtonClick
+            console.log(this.ifDoubleButtonClick)
         }
     },
     data: function () {
@@ -39,7 +59,9 @@ export default {
             settingsRoundButtonStyle: {
                 top: "calc(45vh - " + 70 / 2 + "px)",
                 left: (70 / 4 - 70) + "px"
-            }
+            },
+
+            ifDoubleButtonClick: false
         }
     },
     created: function () {
@@ -76,7 +98,41 @@ export default {
 .settingsRoundButton {
     position: fixed;
 
-    transition: .4s cubic-bezier(0.8, 0.01, 0.49, 1);
+    transition: 0.4s cubic-bezier(0.8, 0.01, 0.49, 1);
     z-index: 1000;
+}
+
+.settingsOptionsBox {
+    padding: 30px 11vw 30px 9vw;
+    box-sizing: border-box;
+
+    width: 100%;
+    height: 100%;
+}
+
+.settingsOptionsColumn {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px 6vw 20px 20px;
+    background-color: rgba(61, 61, 61, 0.11);
+
+    color: rgba(49, 49, 49, 0.733);
+    box-shadow: 0px 4px 20px rgba(95, 95, 95, 0.096);
+    text-shadow: 2px 2px 5px rgba(100, 100, 100, 0.274);
+}
+.settingsOptionsColumnTitle {
+    margin-bottom: 6vh;
+    font-weight: 900;
+    font-size: 5vh;
+}
+
+.settingsOptionsColumnEntry {
+    margin: 10px auto 10px auto;
+}
+.entryTitle {
+    display: inline-block;
+}
+.doubleButton {
+    float: right;
 }
 </style>

@@ -152,6 +152,7 @@ export default {
 * {
     margin: 0px;
     user-select: none;
+    font-family: "fc", "qk";
 }
 #app {
     overflow-x: hidden;
