@@ -25,11 +25,7 @@ export default {
     },
     watch: {
         ifClick: function () {
-            if (this.ifClick) {
-                this.circleButtonStyle.margin = "2px 2px 2px " + (this.height + 2) + "px"
-            } else {
-                this.circleButtonStyle.margin = "2px"
-            }
+            this.circleButtonStyle.margin = this.ifClick ? "2px 2px 2px " + (this.height + 2) + "px" : "2px"
         }
     },
     data: function () {
@@ -42,7 +38,7 @@ export default {
             circleButtonStyle: {
                 height: this.height - 4 + "px",
                 width: this.height - 4 + "px",
-                margin: "2px"
+                margin: this.ifClick ? "2px 2px 2px " + (this.height + 2) + "px" : "2px"
             }
         }
     },
@@ -69,7 +65,6 @@ export default {
 }
 
 .circleButton {
-    margin: 2px;
     float: left;
     transition: 0.4s cubic-bezier(0, 0.82, 0.16, 0.99);
     background-color: rgb(58, 58, 58);

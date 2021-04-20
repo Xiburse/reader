@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="sideBarStart">
+        <div :class="sideBarStartClass">
             <side-bar-column text="添加书籍" :method="addBookMethod" logoSrc="static/addBook.svg"></side-bar-column>
             <div class="lineBox">
                 <div class="line"></div>
@@ -18,6 +18,11 @@ export default {
     name: "SideBar",
     components: {
         SideBarColumn
+    },
+    computed: {
+        sideBarStartClass: function () {
+            return "sideBarStart" + (this.$store.state.ifBlack ? "Black" : "")
+        }
     },
     data: function () {
         return {
@@ -54,7 +59,8 @@ export default {
 </script>
 
 <style>
-.sideBarStart {
+.sideBarStart,
+.sideBarStartBlack {
     width: 300px;
     height: 100vh;
 
@@ -63,13 +69,20 @@ export default {
     box-sizing: border-box;
     padding: 20px;
 }
+.sideBarStartBlack {
+    background-color: rgba(0, 0, 0, 0.664);
+}
 
 .lineBox {
     padding: 20px;
 }
-.line {
+.line,
+.lineBlack {
     background-color: rgba(0, 0, 0, 0.479);
     width: 100%;
     height: 2px;
+}
+.lineBlack {
+    background-color: rgba(255, 255, 255, 0.479);
 }
 </style>

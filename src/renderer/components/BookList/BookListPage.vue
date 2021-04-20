@@ -1,7 +1,7 @@
 <template>
     <transition name="bookListPageTran"
                 mode="out-in">
-        <div class="bookListPageBox">
+        <div :class="bookListPageBoxClass">
             <!-- <button @click="addBookClick">{{message}}</button><br> -->
             <div @click="roundButtonClick"
                  @mouseenter="roundButtonEnter"
@@ -19,7 +19,7 @@
                 <public-book-message class="publicBookMessage"
                                      v-if="$store.state.publicBookMessage.ifShow"></public-book-message>
             </transition>
-            <div class="bookListPageTitle">书&nbsp;籍</div>
+            <div :class="bookListPageTitleClass">书&nbsp;籍</div>
             <transition-group name="bookListTran">
                 <book v-for="list in bookList"
                       :key="list.id"
@@ -51,20 +51,28 @@ export default {
         RoundButton,
         PublicBookMessage,
     },
+    computed: {
+        bookListPageBoxClass: function () {
+            return "bookListPageBox" + (this.$store.state.ifBlack ? "Black" : "")
+        },
+        bookListPageTitleClass: function () {
+            return "bookListPageTitle" + (this.$store.state.ifBlack ? "Black" : "")
+        }
+    },
     methods: {
         addBookClick: function () {
             BookListMessage.addBookFromDialog();
         },
 
         roundButtonClick: function (e) {
-            if (this.sideBarClass == "sideBar") {
+            if (this.sideBarClass == "sideBar" + (this.$store.state.ifBlack ? "Black" : "")) {
                 this.ifRoundButtonClick = false;
-                this.sideBarClass = "sideBarHidden";
+                this.sideBarClass = "sideBarHidden" + (this.$store.state.ifBlack ? "Black" : "");
                 this.roundButtonStyle.top = "calc(45vh - " + this.buttonWidth / 2 + "px)"
                 this.roundButtonStyle.left = (this.buttonWidth / 4 - this.buttonWidth) + "px"
             } else {
                 this.ifRoundButtonClick = true;
-                this.sideBarClass = "sideBar";
+                this.sideBarClass = "sideBar" + (this.$store.state.ifBlack ? "Black" : "");
                 this.roundButtonStyle.top = "calc(80vh - " + this.buttonWidth / 2 + "px)"
                 this.roundButtonStyle.left = (300 - this.buttonWidth) / 2 + "px"
             }
@@ -104,7 +112,7 @@ export default {
         return {
             message: "添加epub书籍",
             bookList: "",
-            sideBarClass: "sideBarHidden",
+            sideBarClass: "sideBarHidden" + (this.$store.state.ifBlack ? "Black" : ""),
             publicBookMessageIfShow: this.$store.state.publicBookMessage.ifShow,
             buttonWidth: 70,
             roundButtonClass: "roundButton",
@@ -152,7 +160,8 @@ export default {
 </script>
 
 <style>
-.bookListPageBox {
+.bookListPageBox,
+.bookListPageBoxBlack {
     animation: init 0.4s cubic-bezier(0.01, 1.44, 0.85, 1.01);
     background-color: rgb(255, 255, 255);
     position: absolute;
@@ -162,6 +171,9 @@ export default {
     left: 0%;
 
     overflow-x: hidden;
+}
+.bookListPageBoxBlack {
+    background-color: rgb(0, 0, 0);
 }
 
 .book {
@@ -174,7 +186,9 @@ export default {
 }
 
 .sideBar,
-.sideBarHidden {
+.sideBarHidden,
+.sideBarBlack,
+.sideBarHiddenBlack {
     position: fixed;
     top: 0px;
     left: 0px;
@@ -186,18 +200,24 @@ export default {
     transition: 0.6s cubic-bezier(0.61, 0.01, 0, 1.01);
     overflow: hidden;
 }
-.sideBarHidden {
+.sideBarHidden,
+.sideBarHiddenBlack {
     left: -300px;
+}
+.sideBarBlack,
+.sideBarHiddenBlack {
+    box-shadow: 5px 0px 40px rgba(20, 20, 20, 0.308);
 }
 
 .roundButton {
     position: fixed;
 
-    transition: .4s cubic-bezier(0.8, 0.01, 0.49, 1);
+    transition: 0.4s cubic-bezier(0.8, 0.01, 0.49, 1);
     z-index: 1000;
 }
 
-.bookListPageTitle {
+.bookListPageTitle,
+.bookListPageTitleBlack {
     font-family: "fc", "qk";
     font-weight: 900;
     font-size: 10vh;
@@ -205,6 +225,10 @@ export default {
     text-shadow: 2px 2px 10px rgba(196, 196, 196, 0.582);
 
     margin: 5vh auto 10vh 8vw;
+}
+.bookListPageTitleBlack {
+    color: rgba(204, 204, 204, 0.795);
+    text-shadow: 2px 2px 10px rgba(71, 71, 71, 0.582);
 }
 
 @keyframes init {

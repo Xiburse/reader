@@ -1,11 +1,11 @@
 <template>
     <div :style="bookStyle"
-         class="bookBox"
+         :class="bookBoxClass"
          @mouseenter="bookBoxMouseEnter"
          @mouseleave="bookBoxMouseLeave"
          @click.right="bookBoxClickRight"
          @click.left="bookBoxClickLeft">
-        <div class="bookCoverBox"
+        <div :class="bookCoverBoxClass"
              :style="bookCoverBoxStyle">
             <img :src="coverPath"
                  alt="图片未加载"
@@ -33,7 +33,7 @@
                 </div>
             </transition>
         </div>
-        <div class="aboutTextBox"
+        <div :class="aboutTextBoxClass"
              :style="aboutTextBoxStyle"
              v-if="ifVertical">
             <div class="titleTextBox"
@@ -53,6 +53,17 @@ export default {
     name: "Book",
     components: {
         ExpandRoundButton
+    },
+    computed: {
+        bookBoxClass: function () {
+            return "bookBox" + (this.$store.state.ifBlack ? "Black" : "")
+        },
+        aboutTextBoxClass: function () {
+            return "aboutTextBox" + (this.$store.state.ifBlack ? "Black" : "")
+        },
+        bookCoverBoxClass: function () {
+            return "bookCoverBox" + (this.$store.state.ifBlack ? "Black" : "")
+        }
     },
     methods: {
         bookBoxMouseEnter: function (e) {
@@ -137,7 +148,8 @@ export default {
 </script>
 
 <style>
-.bookBox {
+.bookBox,
+.bookBoxBlack {
     transition: 0.4s cubic-bezier(0.21, 0, 0.09, 1);
     font-family: "fc", "qk";
     font-size: 0.85em;
@@ -147,13 +159,17 @@ export default {
     letter-spacing: 1px;
     white-space: nowrap;
 }
-
-.bookBox:hover {
+.bookBox:hover,
+.bookBoxBlack:hover {
     transition: 0.4s cubic-bezier(0.21, 0, 0.09, 1);
     transform: scale3d(1.05, 1.05, 1);
 }
+.bookBoxBlack {
+    color: rgba(0, 0, 0, 0.884);
+}
 
-.bookCoverBox {
+.bookCoverBox,
+.bookCoverBoxBlack {
     transition: 0.4s;
     overflow: hidden;
     display: inline-block;
@@ -163,6 +179,13 @@ export default {
 .bookCoverBox:hover {
     transition: 0.4s;
     box-shadow: 0px 4px 40px rgba(63, 63, 63, 0.452);
+}
+.bookCoverBoxBlack {
+    box-shadow: 0px 4px 20px rgba(34, 34, 34, 0.384);
+}
+.bookCoverBoxBlack:hover {
+    transition: 0.4s;
+    box-shadow: 0px 4px 40px rgba(44, 44, 44, 0.452);
 }
 
 .bookCover,
@@ -191,10 +214,14 @@ export default {
     /* transform: scale3d(1.1, 1.1, 1); */
 }
 
-.aboutTextBox {
+.aboutTextBox,
+.aboutTextBoxBlack {
     display: inline-block;
     float: right;
     color: black;
+}
+.aboutTextBoxBlack {
+    color: white;
 }
 
 .titleTextBox {

@@ -35,7 +35,9 @@ export default new Vuex.Store({
 
             change: false,
             moveBackgroundIf: false
-        }
+        },
+
+        ifBlack: false
     },
     mutations: {
         init(state) {
@@ -71,6 +73,10 @@ export default new Vuex.Store({
 
         setMoveBackgroundPropIf(state, bool) {
             state.moveBackgroundProp.moveBackgroundIf = bool
+        },
+
+        setBlack(state, bool) {
+            state.ifBlack = bool
         }
     }
 })

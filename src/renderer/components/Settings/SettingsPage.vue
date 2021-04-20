@@ -1,8 +1,8 @@
 <template>
     <transition name="bookListPageTran"
                 mode="out-in">
-        <div class="settingsPageBox">
-            <div class="settingsPageTitle">设&nbsp;置</div>
+        <div :class="settingsPageBoxClass">
+            <div :class="settingsPageTitleClass">设&nbsp;置</div>
             <div class="settingsRoundButtonBox"
                  @click="settingsRoundButtonBoxClick"
                  @mouseenter="settingsRoundButtonBoxEnter"
@@ -13,7 +13,7 @@
                                        class="settingsRoundButton"></settings-round-button>
             </div>
             <div class="settingsOptionsBox">
-                <div class="settingsOptionsColumn">
+                <div :class="settingsOptionsColumnClass">
                     <div class="settingsOptionsColumnTitle">全局设置</div>
                     <div class="settingsOptionsColumnEntry">
                         <div class="entryTitle">暗黑模式</div>
@@ -22,7 +22,6 @@
                                        :ifClick="ifDoubleButtonClick"
                                        @click.native="doubleButtonClick"></double-button>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -38,6 +37,17 @@ export default {
         SettingsRoundButton,
         DoubleButton
     },
+    computed: {
+        settingsPageBoxClass: function () {
+            return "settingsPageBox" + (this.$store.state.ifBlack ? "Black" : "")
+        },
+        settingsPageTitleClass: function () {
+            return "settingsPageTitle" + (this.$store.state.ifBlack ? "Black" : "")
+        },
+        settingsOptionsColumnClass: function () {
+            return "settingsOptionsColumn" + (this.$store.state.ifBlack ? "Black" : "")
+        }
+    },
     methods: {
         settingsRoundButtonBoxClick: function () {
             this.$router.push({ name: "Page" })
@@ -51,7 +61,7 @@ export default {
 
         doubleButtonClick: function () {
             this.ifDoubleButtonClick = !this.ifDoubleButtonClick
-            console.log(this.ifDoubleButtonClick)
+            this.$store.commit("setBlack", this.ifDoubleButtonClick)
         }
     },
     data: function () {
@@ -65,7 +75,7 @@ export default {
         }
     },
     created: function () {
-
+        this.ifDoubleButtonClick = this.$store.state.ifBlack
     },
     mounted: function () {
 
@@ -73,7 +83,10 @@ export default {
 }
 </script>
 <style>
-.settingsPageBox {
+.settingsPageBox,
+.settingsPageBoxBlack {
+    transition: .4s;
+
     animation: init 0.4s cubic-bezier(0.01, 1.44, 0.85, 1.01);
     background-color: rgb(255, 255, 255);
     position: absolute;
@@ -84,8 +97,14 @@ export default {
 
     overflow-x: hidden;
 }
+.settingsPageBoxBlack {
+    background-color: rgb(0, 0, 0);
+}
 
-.settingsPageTitle {
+.settingsPageTitle,
+.settingsPageTitleBlack {
+    transition: .4s;
+
     font-family: "fc", "qk";
     font-weight: 900;
     font-size: 10vh;
@@ -93,6 +112,10 @@ export default {
     text-shadow: 2px 2px 10px rgba(196, 196, 196, 0.582);
 
     margin: 5vh auto 10vh 8vw;
+}
+.settingsPageTitleBlack {
+    color: rgba(215, 215, 216, 0.699);
+    text-shadow: 2px 2px 10px rgba(75, 75, 75, 0.582);
 }
 
 .settingsRoundButton {
@@ -110,7 +133,10 @@ export default {
     height: 100%;
 }
 
-.settingsOptionsColumn {
+.settingsOptionsColumn,
+.settingsOptionsColumnBlack {
+    transition: .4s;
+
     width: 100%;
     box-sizing: border-box;
     padding: 20px 6vw 20px 20px;
@@ -119,6 +145,12 @@ export default {
     color: rgba(49, 49, 49, 0.733);
     box-shadow: 0px 4px 20px rgba(95, 95, 95, 0.096);
     text-shadow: 2px 2px 5px rgba(100, 100, 100, 0.274);
+}
+.settingsOptionsColumnBlack {
+    background-color: rgba(204, 204, 204, 0.11);
+    color: rgba(201, 201, 201, 0.733);
+    box-shadow: 0px 4px 20px rgba(170, 170, 170, 0.096);
+    text-shadow: 2px 2px 5px rgba(167, 167, 167, 0.274);
 }
 .settingsOptionsColumnTitle {
     margin-bottom: 6vh;

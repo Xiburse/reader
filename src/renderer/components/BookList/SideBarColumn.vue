@@ -1,5 +1,5 @@
 <template>
-    <div class="SideBarColumnBox"
+    <div :class="SideBarColumnBoxClass"
          :style="SideBarColumnStyle"
          @mousedown="SideBarColumnDown"
          @mouseup="SideBarColumnUp"
@@ -10,7 +10,7 @@
              class="SideBarColumnLogo">
         <div class="SideBarColumnTextBox"
              style="height: 40px; display: table-cell; vertical-align: middle;">
-            <div class="SideBarColumnText">{{text}}</div>
+            <div :class="SideBarColumnTextClass">{{text}}</div>
         </div>
     </div>
 </template>
@@ -21,6 +21,14 @@ export default {
         method: Function,
         text: String,
         logoSrc: String
+    },
+    computed: {
+        SideBarColumnBoxClass: function () {
+            return "SideBarColumnBox" + (this.$store.state.ifBlack ? "Black" : "")
+        },
+        SideBarColumnTextClass: function () {
+            return "SideBarColumnText" + (this.$store.state.ifBlack ? "Black" : "")
+        }
     },
     methods: {
         SideBarColumnDown: function () {
@@ -47,7 +55,8 @@ export default {
 }
 </script>
 <style>
-.SideBarColumnBox {
+.SideBarColumnBox,
+.SideBarColumnBoxBlack {
     transition: 0.4s;
     background-color: rgba(255, 255, 255, 0.397);
     box-shadow: 0px 0px 20px rgba(201, 201, 201, 0.322);
@@ -58,6 +67,14 @@ export default {
     transition: 0.4s;
     background-color: rgba(255, 255, 255, 0.747);
 }
+.SideBarColumnBoxBlack {
+    background-color: rgba(0, 0, 0, 0.397);
+    box-shadow: 0px 0px 20px rgba(24, 24, 24, 0.322);
+}
+.SideBarColumnBoxBlack:hover {
+    transition: 0.4s;
+    background-color: rgba(0, 0, 0, 0.747);
+}
 
 .SideBarColumnLogo {
     float: left;
@@ -67,11 +84,15 @@ export default {
     object-fit: cover;
 }
 
-.SideBarColumnText {
+.SideBarColumnText,
+.SideBarColumnTextBlack {
     margin-left: 20px;
     font-family: "fc", "qk";
     font-weight: 900;
     font-size: 16px;
     align-items: center;
+}
+.SideBarColumnTextBlack {
+    color: rgb(255, 255, 255);
 }
 </style>
