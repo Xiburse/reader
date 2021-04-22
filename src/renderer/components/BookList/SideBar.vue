@@ -69,13 +69,13 @@ export default {
     width: 300px;
     height: 100vh;
 
-    background-color: rgba(255, 255, 255, 0.664);
+    background-color: rgba(240, 240, 240, 0.5);
     backdrop-filter: saturate(2000%) blur(35px);
     box-sizing: border-box;
     padding: 20px;
 }
 .sideBarStartBlack {
-    background-color: rgba(0, 0, 0, 0.664);
+    background-color: rgba(14, 14, 14, 0.466);
 }
 
 .lineBox {

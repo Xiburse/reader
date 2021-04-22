@@ -126,7 +126,7 @@ export default {
             bookWidth: 120,
             bookHeight: 170,
 
-            ifVertical: true,
+            ifVertical: this.$store.state.bookModNumber == 0 ? false : true,
 
             bookStyle: {
                 margin: ""
@@ -194,7 +194,7 @@ export default {
     top: 0px;
     left: 0px;
 
-    box-shadow: 5px 0px 40px rgba(192, 192, 192, 0.308);
+    box-shadow: 5px 0px 80px rgba(192, 192, 192, 0.151);
 
     z-index: 999;
     /* transition: 0.6s cubic-bezier(0.14, 0.98, 0.3, 1); */
@@ -207,7 +207,7 @@ export default {
 }
 .sideBarBlack,
 .sideBarHiddenBlack {
-    box-shadow: 5px 0px 40px rgba(20, 20, 20, 0.308);
+    box-shadow: none;
 }
 
 .roundButton {

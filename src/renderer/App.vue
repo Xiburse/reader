@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div id="app" :class="appClass">
         <div class="toolButtons">
             <span class="closeWindow"
                   @mouseenter="closeWindowMouseEnter"
@@ -106,6 +106,11 @@ export default {
             ipcRenderer.send("window-min")
         }
     },
+    computed: {
+        appClass: function () {
+            return "app" + (this.$store.state.ifBlack ? "Black" : "")
+        }
+    },
     data: function () {
         return {
             closeWindowLogoClass: "closeWindowLogo",
@@ -128,10 +133,9 @@ export default {
     created: function () {
         store.commit("init")
         store.commit("setBlack", remote.getGlobal("options").ifBlack)
-        var _this = this
+        store.commit("setBookModNumber", remote.getGlobal("options").bookModNumber)
+        var _t = this
         ipcRenderer.on("main-window-unmax", function () {
-            console.log(233333)
-            var _t = _this
             _t.ifMax = false
             _t.maxWindowLogoSrc = "static/maximize.svg"
         })
@@ -159,6 +163,14 @@ export default {
 }
 #app {
     overflow-x: hidden;
+    width: 100vw;
+    height: 100vh;
+}
+.app {
+    background-color: rgb(255, 255, 255);
+}
+.appBlack {
+    background-color: rgb(0, 0, 0);
 }
 body {
     /* background-color: rgba(255, 255, 255, 0.466);
@@ -171,10 +183,10 @@ body {
 }
 ::-webkit-scrollbar-thumb {
     border-radius: 999px;
-    background-color: rgba(0, 0, 0, 0.185);
+    background-color: rgb(165, 165, 165);
 }
 ::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(0, 0, 0, 0.527);
+    background-color: rgb(65, 65, 65);
 }
 ::-webkit-scrollbar-track {
     background-color: rgba(0, 0, 0, 0.1);

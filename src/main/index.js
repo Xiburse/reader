@@ -18,7 +18,8 @@ global["iframeOptions"] = {
     ifInit: false
 }
 global["options"] = {
-    ifBlack: 0
+    ifBlack: false,
+    bookModNumber: 0
 }
 
 fs.stat(global["erPath"], function (err) {
@@ -51,7 +52,7 @@ fs.stat(global["optionsPath"] + "\\reading.json", function (err) {
 
 fs.stat(global["optionsPath"] + "\\options.json", function (err) {
     if (err) {
-        fs.writeFile(global["optionsPath"] + "\\options.json", "{\"ifBlack\":0}", {
+        fs.writeFile(global["optionsPath"] + "\\options.json", "{\"ifBlack\":false,\"bookModNumber\":0}", {
             encoding: "utf-8"
         }, () => {})
     }
@@ -61,7 +62,13 @@ try {
     fs.statSync(global["optionsPath"] + "\\options.json")
     var optionsFile = new File(global["optionsPath"] + "\\options.json")
     var optionsJson = JSON.parse(optionsFile.readString("utf-8")) 
-    global["options"].ifBlack = optionsJson.ifBlack
+    console.log(23333333)
+    if(optionsJson.ifBlack) {
+        global["options"].ifBlack = optionsJson.ifBlack
+    }
+    if(optionsJson.bookModNumber) {
+        global["options"].bookModNumber = optionsJson.bookModNumber
+    }
 } catch(e) { 
     console.log("err")
 }

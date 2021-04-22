@@ -37,7 +37,8 @@ export default new Vuex.Store({
             moveBackgroundIf: false
         },
 
-        ifBlack: false
+        ifBlack: false,
+        bookModNumber: 1
     },
     mutations: {
         init(state) {
@@ -77,6 +78,10 @@ export default new Vuex.Store({
 
         setBlack(state, bool) {
             state.ifBlack = bool
+        },
+        
+        setBookModNumber(state, str) {
+            state.bookModNumber = str
         }
     }
 })

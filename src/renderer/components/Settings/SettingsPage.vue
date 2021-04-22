@@ -23,6 +23,16 @@
                                        @click.native="doubleButtonClick"></double-button>
                     </div>
                 </div>
+                <div :class="settingsOptionsColumnClass">
+                    <div class="settingsOptionsColumnTitle">书架设置</div>
+                    <div class="settingsOptionsColumnEntry">
+                        <div class="entryTitle">{{bookModString}}</div>
+                        <double-button class="doubleButton"
+                                       :height="20"
+                                       :ifClick="ifBookModClick"
+                                       @click.native="bookModClick"></double-button>
+                    </div>
+                </div>
             </div>
         </div>
     </transition>
@@ -47,6 +57,10 @@ export default {
         },
         settingsOptionsColumnClass: function () {
             return "settingsOptionsColumn" + (this.$store.state.ifBlack ? "Black" : "")
+        },
+
+        bookModString: function () {
+            return this.ifBookModClick ? "列表模式" : "表格模式"
         }
     },
     methods: {
@@ -64,6 +78,12 @@ export default {
             this.ifDoubleButtonClick = !this.ifDoubleButtonClick
             remote.getGlobal("options").ifBlack = this.ifDoubleButtonClick
             this.$store.commit("setBlack", this.ifDoubleButtonClick)
+        },
+
+        bookModClick: function () {
+            this.ifBookModClick = !this.ifBookModClick
+            remote.getGlobal("options").bookModNumber = this.ifBookModClick ? 1 : 0
+            this.$store.commit("setBookModNumber", this.ifBookModClick ? 1 : 0)
         }
     },
     data: function () {
@@ -73,11 +93,19 @@ export default {
                 left: (70 / 4 - 70) + "px"
             },
 
-            ifDoubleButtonClick: false
+            ifDoubleButtonClick: false,
+            ifBookModClick: false
         }
     },
     created: function () {
         this.ifDoubleButtonClick = this.$store.state.ifBlack
+        console.log(this.$store.state)
+        if (this.$store.state.bookModNumber == 0) {
+            this.ifBookModClick = false
+        } else {
+            this.ifBookModClick = true
+        }
+        
     },
     mounted: function () {
 
@@ -89,7 +117,7 @@ export default {
 .settingsPageBoxBlack {
     transition: 0.4s;
 
-    animation: init 0.4s cubic-bezier(0.01, 1.44, 0.85, 1.01);
+    animation: init .4s cubic-bezier(0.01, 1.44, 0.85, 1.01);
     background-color: rgb(255, 255, 255);
     position: absolute;
     width: 100vw;
@@ -147,6 +175,7 @@ export default {
     color: rgba(49, 49, 49, 0.733);
     box-shadow: 0px 4px 20px rgba(95, 95, 95, 0.096);
     text-shadow: 2px 2px 5px rgba(100, 100, 100, 0.274);
+    margin-bottom: 10vh;
 }
 .settingsOptionsColumnBlack {
     background-color: rgba(204, 204, 204, 0.11);
