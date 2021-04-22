@@ -6,6 +6,7 @@ import {
 } from 'electron'
 import fs from "fs"
 import path from "path"
+import File from "./File"
 
 global["userPath"] = process.env.USERPROFILE
 global["erPath"] = process.env.USERPROFILE + "\\epub-reader"
@@ -15,6 +16,9 @@ global["optionsPath"] = process.env.USERPROFILE + "\\epub-reader\\options"
 global["iframeOptions"] = {
     b: 0,
     ifInit: false
+}
+global["options"] = {
+    ifBlack: 0
 }
 
 fs.stat(global["erPath"], function (err) {
@@ -44,6 +48,23 @@ fs.stat(global["optionsPath"] + "\\reading.json", function (err) {
         }, () => {})
     }
 })
+
+fs.stat(global["optionsPath"] + "\\options.json", function (err) {
+    if (err) {
+        fs.writeFile(global["optionsPath"] + "\\options.json", "{\"ifBlack\":0}", {
+            encoding: "utf-8"
+        }, () => {})
+    }
+})
+
+try {
+    fs.statSync(global["optionsPath"] + "\\options.json")
+    var optionsFile = new File(global["optionsPath"] + "\\options.json")
+    var optionsJson = JSON.parse(optionsFile.readString("utf-8")) 
+    global["options"].ifBlack = optionsJson.ifBlack
+} catch(e) { 
+    console.log("err")
+}
 
 /**
  * Set `__static` path to static files in production
@@ -134,6 +155,9 @@ function createWindow() {
 app.on('ready', createWindow)
 
 app.on('window-all-closed', () => {
+    var optionsFile = new File(global["optionsPath"] + "\\options.json")
+    optionsFile.write("utf-8", JSON.stringify(global["options"]))
+    
     if (process.platform !== 'darwin') {
         app.quit()
     }

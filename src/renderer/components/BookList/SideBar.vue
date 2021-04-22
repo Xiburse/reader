@@ -1,16 +1,21 @@
 <template>
     <div>
         <div :class="sideBarStartClass">
-            <side-bar-column text="添加书籍" :method="addBookMethod" logoSrc="static/addBook.svg"></side-bar-column>
+            <side-bar-column text="添加书籍"
+                             :method="addBookMethod"
+                             logoSrc="static/addBook.svg"></side-bar-column>
             <div class="lineBox">
                 <div class="line"></div>
             </div>
-            <side-bar-column text="设置" :method="settingsMethod" logoSrc="static/settings.svg"></side-bar-column>
+            <side-bar-column text="设置"
+                             :method="settingsMethod"
+                             logoSrc="static/settings.svg"></side-bar-column>
         </div>
     </div>
 </template>
 
 <script>
+import { remote } from "electron"
 import BookListMessage from "@/modules/BookListMessage"
 import SideBarColumn from "./SideBarColumn.vue"
 
@@ -34,7 +39,7 @@ export default {
                 BookListMessage.addBookFromDialog()
             },
             settingsMethod: function () {
-                this.$router.push({name: "Settings"})
+                this.$router.push({ name: "Settings" })
             }
         }
     },

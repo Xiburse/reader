@@ -1,6 +1,6 @@
 <template>
     <transition name="readBookPageTran">
-        <div class="readBookPageBox">
+        <div :class="readBookPageBoxClass">
             <div class="bookTextPageBox">
                 <webview class="bookTextIframe"
                          :src="iframeSrc"
@@ -32,6 +32,11 @@ export default {
     components: {
         Contents,
         MoveBackground
+    },
+    computed: {
+        readBookPageBoxClass: function () {
+            return "readBookPageBox" + (this.$store.state.ifBlack ? "Black" : "")
+        }
     },
     methods: {
         triggerMouseEnter: function () {
@@ -73,6 +78,7 @@ export default {
         this.$store.commit("setMoveBackgroundPropIf", false)
     },
     mounted: function () {
+        var _this = this
         globalBus.$on("setIframeSrc", (src) => {
             this.iframeSrc = "file:///" + remote.getGlobal("cachePath").replace(/\\/g, "/") + "/" + this.nid + "/OEBPS/" + src
             console.log(this.iframeSrc)
@@ -84,6 +90,9 @@ export default {
             var b = bti
 
             b.insertCSS(`
+            body {
+                ${_this.$store.state.ifBlack ? "background-color: rgb(0, 0, 0);" : ""}
+            }
             ::-webkit-scrollbar {
                 width: 5px;
             }
@@ -106,6 +115,7 @@ export default {
                 pointer-events: none;
             }
             p, h1, h2, h3, h4, h5, h6, li {
+                ${_this.$store.state.ifBlack ? "color: rgb(255, 255, 255);" : ""}
                 margin-left: 10vw !important;
                 margin-right: 10vw !important;
             }
@@ -137,7 +147,7 @@ export default {
                 }
             `)
 
-            
+
         })
 
         var list = UpdateReadingBook.getData(this.nid)
@@ -153,12 +163,16 @@ export default {
 }
 </script>
 <style>
-.readBookPageBox {
+.readBookPageBox,
+.readBookPageBoxBlack {
     position: relative;
     top: 0%;
     left: 0%;
 
     overflow: hidden;
+}
+.readBookPageBoxBlack {
+    background-color: rgb(0, 0, 0);
 }
 .contents,
 .contentsHidden {

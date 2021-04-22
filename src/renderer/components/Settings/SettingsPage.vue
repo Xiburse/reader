@@ -28,6 +28,7 @@
     </transition>
 </template>
 <script>
+import { remote } from "electron"
 import SettingsRoundButton from "./SettingsRoundButton.vue"
 import DoubleButton from "../DoubleButton.vue"
 
@@ -61,6 +62,7 @@ export default {
 
         doubleButtonClick: function () {
             this.ifDoubleButtonClick = !this.ifDoubleButtonClick
+            remote.getGlobal("options").ifBlack = this.ifDoubleButtonClick
             this.$store.commit("setBlack", this.ifDoubleButtonClick)
         }
     },
@@ -85,7 +87,7 @@ export default {
 <style>
 .settingsPageBox,
 .settingsPageBoxBlack {
-    transition: .4s;
+    transition: 0.4s;
 
     animation: init 0.4s cubic-bezier(0.01, 1.44, 0.85, 1.01);
     background-color: rgb(255, 255, 255);
@@ -103,7 +105,7 @@ export default {
 
 .settingsPageTitle,
 .settingsPageTitleBlack {
-    transition: .4s;
+    transition: 0.4s;
 
     font-family: "fc", "qk";
     font-weight: 900;
@@ -135,7 +137,7 @@ export default {
 
 .settingsOptionsColumn,
 .settingsOptionsColumnBlack {
-    transition: .4s;
+    transition: 0.4s;
 
     width: 100%;
     box-sizing: border-box;

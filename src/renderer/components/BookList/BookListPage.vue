@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import { remote } from "electron"
 import Book from "./Book.vue";
 import BookListMessage from "@/modules/BookListMessage";
 import SideBar from "./SideBar.vue";

@@ -39,7 +39,7 @@
 
 <script>
 import store from "./store/index"
-import { ipcRenderer } from "electron"
+import { ipcRenderer, remote } from "electron"
 
 export default {
     name: 'epub-reader',
@@ -53,7 +53,7 @@ export default {
             this.closeWindowLogoClass = "closeWindowLogo"
             this.closeWindowIfEnter = false
             setTimeout(() => {
-                if(!this.closeWindowIfEnter) {
+                if (!this.closeWindowIfEnter) {
                     this.closeWindowIf = false
                 }
             }, 2000);
@@ -71,7 +71,7 @@ export default {
             this.maxWindowLogoClass = "maxWindowLogo"
             this.maxWindowIfEnter = false
             setTimeout(() => {
-                if(!this.maxWindowIfEnter) {
+                if (!this.maxWindowIfEnter) {
                     this.maxWindowIf = false
                 }
             }, 2000);
@@ -97,7 +97,7 @@ export default {
             this.hiddenWindowLogoClass = "hiddenWindowLogo"
             this.hiddenWindowIfEnter = false
             setTimeout(() => {
-                if(!this.hiddenWindowIfEnter) {
+                if (!this.hiddenWindowIfEnter) {
                     this.hiddenWindowIf = false
                 }
             }, 2000);
@@ -127,6 +127,7 @@ export default {
     },
     created: function () {
         store.commit("init")
+        store.commit("setBlack", remote.getGlobal("options").ifBlack)
         var _this = this
         ipcRenderer.on("main-window-unmax", function () {
             console.log(233333)
@@ -134,6 +135,8 @@ export default {
             _t.ifMax = false
             _t.maxWindowLogoSrc = "static/maximize.svg"
         })
+
+        
     }
 }
 </script>
