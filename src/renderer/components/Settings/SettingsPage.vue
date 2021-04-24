@@ -178,9 +178,9 @@ export default {
     margin-bottom: 10vh;
 }
 .settingsOptionsColumnBlack {
-    background-color: rgba(204, 204, 204, 0.11);
+    background-color: rgba(255, 255, 255, 0.2);
     color: rgba(201, 201, 201, 0.733);
-    box-shadow: 0px 4px 20px rgba(170, 170, 170, 0.096);
+    box-shadow: 0px 4px 10px rgba(173, 173, 173, 0.24);
     text-shadow: 2px 2px 5px rgba(167, 167, 167, 0.274);
 }
 .settingsOptionsColumnTitle {

@@ -3,7 +3,7 @@
          :style="doubleButtonBoxStyle"
          @mouseenter="doubleButtonEnter"
          @mouseleave="doubleButtonLeave">
-        <div class="circleButton"
+        <div :class="circleButtonClass"
              :style="circleButtonStyle"></div>
     </div>
 </template>
@@ -17,15 +17,30 @@ export default {
     },
     methods: {
         doubleButtonEnter: function () {
-            this.doubleButtonBoxClass = "doubleButtonBoxHover"
+            this.doubleButtonBoxClass = "doubleButtonBoxHover" + (this.$store.state.ifBlack ? "Black" : "")
         },
         doubleButtonLeave: function () {
-            this.doubleButtonBoxClass = "doubleButtonBox"
+            this.doubleButtonBoxClass = "doubleButtonBox" + (this.$store.state.ifBlack ? "Black" : "")
+        }
+    },
+    computed: {
+        circleButtonClass: function () {
+            return "circleButton" + (this.$store.state.ifBlack ? "Black" : "")
+        },
+        ifBlack: function () {
+            return this.$store.state.ifBlack
         }
     },
     watch: {
         ifClick: function () {
             this.circleButtonStyle.margin = this.ifClick ? "2px 2px 2px " + (this.height + 2) + "px" : "2px"
+        },
+        ifBlack: function () {
+            if(!this.ifBlack) {
+                this.doubleButtonBoxClass = this.doubleButtonBoxClass.split("Black")[0]
+            } else {
+                this.doubleButtonBoxClass += "Black"
+            }
         }
     },
     data: function () {
@@ -34,7 +49,7 @@ export default {
                 height: this.height + "px",
                 width: this.height * 2 + "px"
             },
-            doubleButtonBoxClass: "doubleButtonBox",
+            doubleButtonBoxClass: "doubleButtonBox" + (this.$store.state.ifBlack ? "Black" : ""),
             circleButtonStyle: {
                 height: this.height - 4 + "px",
                 width: this.height - 4 + "px",
@@ -52,7 +67,9 @@ export default {
 </script>
 <style>
 .doubleButtonBox,
-.doubleButtonBoxHover {
+.doubleButtonBoxHover,
+.doubleButtonBoxBlack,
+.doubleButtonBoxHoverBlack {
     display: inline-block;
 
     border-radius: 999px;
@@ -63,12 +80,24 @@ export default {
 .doubleButtonBoxHover {
     box-shadow: 2px 2px 20px rgba(119, 119, 119, 0.459);
 }
+.doubleButtonBoxBlack {
+    background-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 2px 2px 20px rgba(119, 119, 119, 0.459);
+}
+.doubleButtonBoxHoverBlack {
+    background-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 2px 2px 10px rgba(196, 196, 196, 0.582);
+}
 
-.circleButton {
+.circleButton,
+.circleButtonBlack {
     float: left;
     transition: 0.4s cubic-bezier(0, 0.82, 0.16, 0.99);
-    background-color: rgb(58, 58, 58);
+    background-color: rgb(22, 22, 22);
     border-radius: 999px;
     text-shadow: 2px 2px 10px rgba(196, 196, 196, 0.582);
+}
+.circleButtonBlack {
+    background-color: rgba(255, 255, 255, 0.6);
 }
 </style>

@@ -102,8 +102,9 @@ export default {
             contentStyle: {
                 zoom: "",
                 transform: "",
-                backgroundColor: "rgba(200, 200, 200, " + (0.5 + this.level / 10) + ")",
-                paddingLeft: this.level * 10 + "%"
+                backgroundColor: this.$store.state.ifBlack ? "rgba(20, 20, 20, " + (0.5 + this.level / 10) + ")" : "rgba(200, 200, 200, " + (0.5 + this.level / 10) + ")",
+                paddingLeft: this.level * 10 + "%",
+                color: this.$store.state.ifBlack ? "white" : "black"
             },
             contentTitleTextBoxStyle: {
                 height: "40px",

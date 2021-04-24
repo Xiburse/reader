@@ -1,5 +1,5 @@
 <template>
-    <div class="contentsBox"
+    <div :class="contentsBoxClass"
          @mouseleave="contentsBoxMouseLeave">
         <div class="contentsChildBox">
             <contents-child v-for="l in list.list"
@@ -28,6 +28,11 @@ export default {
     components: {
         ContentsChild,
         ExpandRoundButton
+    },
+    computed: {
+        contentsBoxClass: function () {
+            return "contentsBox" + (this.$store.state.ifBlack ? "Black" : "")
+        }
     },
     methods: {
         contentsBoxMouseLeave: function () {
@@ -59,7 +64,8 @@ export default {
 </script>
 
 <style>
-.contentsBox {
+.contentsBox,
+.contentsBoxBlack {
     width: 300px;
     height: 100vh;
 
@@ -69,6 +75,9 @@ export default {
 
     overflow-y: scroll;
     overflow-x: hidden;
+}
+.contentsBoxBlack {
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .contentsChildBox {

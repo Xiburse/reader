@@ -1,6 +1,6 @@
 <template>
     <transition name="moveBackgroundTran">
-        <div class="moveBackgroundBox"
+        <div :class="moveBackgroundBoxClass"
              :style="moveBackgroundBoxStyle"
              ref="moveBackground"
              v-if="moveBackgroundIf"></div>
@@ -17,8 +17,10 @@ export default {
             return this.$store.state.moveBackgroundProp.change
         },
         moveBackgroundIf: function () {
-            console.log(this.$store.state.moveBackgroundProp.moveBackgroundIf)
             return this.$store.state.moveBackgroundProp.moveBackgroundIf
+        },
+        moveBackgroundBoxClass: function () {
+            return "moveBackgroundBox" + (this.$store.state.ifBlack ? "Black" : "")
         }
     },
     watch: {
@@ -49,10 +51,14 @@ export default {
 }
 </script>
 <style>
-.moveBackgroundBox {
+.moveBackgroundBox,
+.moveBackgroundBoxBlack {
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.527);
+    background-color: rgba(0, 0, 0, 0.5);
     transition: .3s cubic-bezier(.01,.97,.3,.99);
+}
+.moveBackgroundBoxBlack {
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .moveBackgroundTran-enter,
