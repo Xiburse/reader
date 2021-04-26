@@ -16,26 +16,39 @@
                       :list="list"
                       @mouseleave.native="contentsMouseLeave"></contents>
             <move-background style="pointer-events:none"></move-background>
+            <transition name="nextButtonTran">
+                <expand-round-button :class="nextButtonClass"
+                                     :width="50"
+                                     expandLogoPath="static/next.svg"
+                                     :ifClick="false"
+                                     @click.native="nextButtonClick"
+                                     v-show="ifNextButton"></expand-round-button>
+            </transition>
         </div>
     </transition>
 </template>
 
 <script>
 import globalBus from "@/modules/globalBus"
-import { remote } from "electron"
+import { remote, ipcRenderer } from "electron"
 import Contents from "./Contents.vue"
 import MoveBackground from "../MoveBackground.vue"
 import UpdateReadingBook from "@/modules/UpdateReadingBook"
+import ExpandRoundButton from "./ExpandRoundButton.vue"
 
 export default {
     name: "ReadBookPage",
     components: {
         Contents,
-        MoveBackground
+        MoveBackground,
+        ExpandRoundButton
     },
     computed: {
         readBookPageBoxClass: function () {
             return "readBookPageBox" + (this.$store.state.ifBlack ? "Black" : "")
+        },
+        nextButtonClass: function () {
+            return "nextButton" + (this.$store.state.ifBlack ? "Black" : "")
         }
     },
     methods: {
@@ -45,6 +58,22 @@ export default {
 
         contentsMouseLeave: function () {
             this.contentsIf = false
+        },
+
+        nextButtonClick: function () {
+            var list = this.list.list
+            var i = 0
+            for(i = 0; i < list.length; i++) {
+                if(this.iframeSrc.indexOf(list[i].path) != -1) {
+                    break
+                }
+            }
+            if(i < list.length - 1) {
+                globalBus.$emit("setIframeSrc", list[i + 1].path)
+            }
+
+            remote.getGlobal("iframeOptions").ifReadEnd = false
+            this.ifNextButton = false
         }
     },
     watch: {
@@ -65,7 +94,9 @@ export default {
             contentsIf: false,
             contentsClass: "contentsHidden",
 
-            iframeSrc: ""
+            iframeSrc: "",
+
+            ifNextButton: false
         }
     },
     created: function () {
@@ -76,6 +107,14 @@ export default {
 
         this.$store.commit("setMoveBackgroundProp", { "width": "0", "height": "2", "left": "0", "top": "0", "change": false })
         this.$store.commit("setMoveBackgroundPropIf", false)
+
+        var _this = this
+        ipcRenderer.on("add-end-button", function () {
+            _this.ifNextButton = true
+        })
+        ipcRenderer.on("remove-end-button", function () {
+            _this.ifNextButton = false
+        })
     },
     mounted: function () {
         var _this = this
@@ -132,13 +171,27 @@ export default {
 
             b.executeJavaScript(`
                 const remote = require("electron").remote;
+                const { ipcRenderer } = require("electron");
                 window.addEventListener("scroll", function () {
                     var re = remote;
                     var scrollTop = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
                     var scrollHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
                     var b = scrollTop / scrollHeight;
                     re.getGlobal("iframeOptions").b = b;
+
+                    if(document.documentElement.scrollTop + document.documentElement.clientHeight >= document.documentElement.scrollHeight - 50) {
+                        ipcRenderer.send("read-end")
+                    } else {
+                        ipcRenderer.send("read-no-end")
+                    }
                 });
+
+                if(document.documentElement.scrollTop + document.documentElement.clientHeight >= document.documentElement.scrollHeight - 50) {
+                    ipcRenderer.send("read-end")
+                } else {
+                    ipcRenderer.send("read-no-end")
+                }
+                
                 if(remote.getGlobal("iframeOptions").ifInit) {
                     var b = remote.getGlobal("iframeOptions").b;
                     var scrollTop = b * document.body.scrollHeight;
@@ -207,6 +260,15 @@ export default {
     height: 100vh;
 }
 
+.nextButton,
+.nextButtonBlack {
+    position: fixed;
+    right: 3vw;
+    bottom: 3vh;
+}
+.nextButtonBlack {
+}
+
 .readBookPageTran-enter,
 .readBookPageTran-leave-to {
     opacity: 0;
@@ -214,5 +276,15 @@ export default {
 .readBookPageTran-enter-active,
 .readBookPageTran-leave-active {
     transition: 0.4s cubic-bezier(0.01, 0.94, 0.28, 0.98);
+}
+
+.nextButtonTran-enter,
+.nextButtonTran-leave-to {
+    opacity: 0;
+    bottom: -50px;
+}
+.nextButtonTran-enter-active,
+.nextButtonTran-leave-active {
+    transition: 0.4s;
 }
 </style>

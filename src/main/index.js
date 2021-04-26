@@ -15,7 +15,8 @@ global["optionsPath"] = process.env.USERPROFILE + "\\epub-reader\\options"
 
 global["iframeOptions"] = {
     b: 0,
-    ifInit: false
+    ifInit: false,
+    ifReadEnd: false
 }
 global["options"] = {
     ifBlack: false,
@@ -61,15 +62,15 @@ fs.stat(global["optionsPath"] + "\\options.json", function (err) {
 try {
     fs.statSync(global["optionsPath"] + "\\options.json")
     var optionsFile = new File(global["optionsPath"] + "\\options.json")
-    var optionsJson = JSON.parse(optionsFile.readString("utf-8")) 
+    var optionsJson = JSON.parse(optionsFile.readString("utf-8"))
     console.log(23333333)
-    if(optionsJson.ifBlack) {
+    if (optionsJson.ifBlack) {
         global["options"].ifBlack = optionsJson.ifBlack
     }
-    if(optionsJson.bookModNumber) {
+    if (optionsJson.bookModNumber) {
         global["options"].bookModNumber = optionsJson.bookModNumber
     }
-} catch(e) { 
+} catch (e) {
     console.log("err")
 }
 
@@ -137,8 +138,21 @@ function createWindow() {
         mainWindow.close()
     })
 
+    ipcMain.on("read-end", function () {
+        if (!global["iframeOptions"].ifReadEnd) {
+            global["iframeOptions"].ifReadEnd = true
+            mainWindow.webContents.send("add-end-button")
+        }
+    })
+    ipcMain.on("read-no-end", function () {
+        if (global["iframeOptions"].ifReadEnd) {
+            global["iframeOptions"].ifReadEnd = false
+            mainWindow.webContents.send("remove-end-button")
+        }
+    })
+
     // mainWindow.on("resize", function () {
-        
+
     // })
 
     protocol.interceptFileProtocol('file', function (request, callback, next) {
@@ -164,7 +178,7 @@ app.on('ready', createWindow)
 app.on('window-all-closed', () => {
     var optionsFile = new File(global["optionsPath"] + "\\options.json")
     optionsFile.write("utf-8", JSON.stringify(global["options"]))
-    
+
     if (process.platform !== 'darwin') {
         app.quit()
     }

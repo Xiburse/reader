@@ -37,9 +37,9 @@
              :style="aboutTextBoxStyle"
              v-if="ifVertical">
             <div class="titleTextBox"
-                 :style="titleTextBoxStyle">{{list.title}}</div>
+                 :style="titleTextBoxStyle">{{list.content.message.title}}</div>
             <div class="authorTextBox"
-                 :style="authorTextBoxStyle">{{list.author}}</div>
+                 :style="authorTextBoxStyle">{{list.content.message.author}}</div>
         </div>
     </div>
 </template>
@@ -102,7 +102,8 @@ export default {
     },
     data: function () {
         return {
-            coverPath: remote.getGlobal("cachePath") + "\\" + this.nid + "\\OEBPS\\Images\\cover.jpg",
+            // coverPath: remote.getGlobal("cachePath") + "\\" + this.nid + "\\OEBPS\\Images\\cover.jpg",
+            coverPath: remote.getGlobal("cachePath") + "\\" + this.nid + "\\OEBPS\\" + this.list.content.message.cover.replace("/", "\\"),
             bookStyle: {
                 width: this.ifVertical ? "80vw" : this.width + "px",
                 height: this.height + "px",
