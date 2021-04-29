@@ -75,18 +75,18 @@ export default {
     border-radius: 999px;
     transition: 0.4s;
     background-color: rgb(170, 170, 170);
-    box-shadow: 2px 2px 10px rgba(196, 196, 196, 0.582);
+    box-shadow: 0px 0px 10px rgba(196, 196, 196, 0.582);
 }
 .doubleButtonBoxHover {
-    box-shadow: 2px 2px 20px rgba(119, 119, 119, 0.459);
+    box-shadow: 0px 0px 20px rgba(119, 119, 119, 0.459);
 }
 .doubleButtonBoxBlack {
     background-color: rgba(255, 255, 255, 0.15);
-    box-shadow: 2px 2px 20px rgba(119, 119, 119, 0.459);
+    box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.123);
 }
 .doubleButtonBoxHoverBlack {
     background-color: rgba(255, 255, 255, 0.15);
-    box-shadow: 2px 2px 10px rgba(196, 196, 196, 0.582);
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.37);
 }
 
 .circleButton,

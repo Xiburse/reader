@@ -48,6 +48,7 @@
 import { remote } from "electron"
 import ExpandRoundButton from "./ExpandRoundButton.vue"
 import BookListMessage from '@/modules/BookListMessage'
+import globalBus from "@/modules/globalBus"
 
 export default {
     name: "Book",
@@ -76,6 +77,7 @@ export default {
             this.bookCoverStyle.transform = ""
         },
         bookBoxClickLeft: function (e) {
+            globalBus.$emit("exchange", this.nid)
             this.$router.push({ name: "ReadBook", params: { nid: this.nid, list: this.list } })
         },
         bookBoxClickRight: function () {
@@ -151,7 +153,7 @@ export default {
 <style>
 .bookBox,
 .bookBoxBlack {
-    transition: 0.4s cubic-bezier(0.21, 0, 0.09, 1);
+    transition: 0.4s cubic-bezier(0.01, 0.94, 0.28, 0.98);
     font-family: "fc", "qk";
     font-size: 0.85em;
     font-weight: lighter;
@@ -162,7 +164,7 @@ export default {
 }
 .bookBox:hover,
 .bookBoxBlack:hover {
-    transition: 0.4s cubic-bezier(0.21, 0, 0.09, 1);
+    transition: 0.4s cubic-bezier(0.01, 0.94, 0.28, 0.98);
     transform: scale3d(1.05, 1.05, 1);
 }
 .bookBoxBlack {
@@ -212,7 +214,9 @@ export default {
     left: 0%;
     backdrop-filter: saturate(200%);
     background-color: rgba(32, 32, 32, 0.815);
-    /* transform: scale3d(1.1, 1.1, 1); */
+    width: 100%;
+    height: 100%;
+    transform: scale3d(1.05, 1.05, 1);
 }
 
 .aboutTextBox,

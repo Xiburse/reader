@@ -7,6 +7,7 @@ import {
 import fs from "fs"
 import path from "path"
 import File from "./File"
+import globalBus from "../renderer/modules/globalBus"
 
 global["userPath"] = process.env.USERPROFILE
 global["erPath"] = process.env.USERPROFILE + "\\epub-reader"

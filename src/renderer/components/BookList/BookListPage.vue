@@ -38,6 +38,7 @@
 <script>
 import { remote } from "electron"
 import Book from "./Book.vue";
+import File from "@/modules/File"
 import BookListMessage from "@/modules/BookListMessage";
 import SideBar from "./SideBar.vue";
 import RoundButton from "./RoundButton.vue";
@@ -138,10 +139,30 @@ export default {
 
         this.bookList = BookListMessage.getBookList()
         globalBus.$on("addBookList", (json) => {
-            this.bookList.push(json)
+            _this.bookList.push(json)
         })
         globalBus.$on("deleteBookList", (index) => {
-            this.bookList.splice(index, 1)
+            _this.bookList.splice(index, 1)
+        })
+        globalBus.$on("saveBookList", (index) => {
+            var bookList = new File(remote.getGlobal("optionsPath") + "\\bookList.json")
+            var bookListJson = JSON.parse(bookList.readString("utf-8"))
+            bookListJson.bookList = _this.bookList
+            bookList.write("utf-8", JSON.stringify(bookListJson))
+        })
+        globalBus.$on("exchange", (nid) => {
+            var i = 0
+            for(i = 0; i < _this.bookList.length; i++) {
+                if(_this.bookList[i].id == nid) {
+                    break
+                }
+            }
+            if(i != 0) {
+                var z = _this.bookList[i]
+                _this.bookList[i] = _this.bookList[0]
+                _this.bookList[0] = z
+                globalBus.$emit("saveBookList")
+            }
         })
 
         document.onclick = function () {
@@ -198,7 +219,7 @@ export default {
 
     z-index: 999;
     /* transition: 0.6s cubic-bezier(0.14, 0.98, 0.3, 1); */
-    transition: 0.6s cubic-bezier(0.61, 0.01, 0, 1.01);
+    transition: 0.6s cubic-bezier(0.01, 0.94, 0.28, 0.98);
     overflow: hidden;
 }
 .sideBarHidden,
@@ -213,7 +234,7 @@ export default {
 .roundButton {
     position: fixed;
 
-    transition: 0.4s cubic-bezier(0.8, 0.01, 0.49, 1);
+    transition: 0.4s cubic-bezier(0.01, 0.94, 0.28, 0.98);
     z-index: 1000;
 }
 
@@ -225,7 +246,7 @@ export default {
     color: rgba(48, 48, 48, 0.795);
     text-shadow: 2px 2px 10px rgba(196, 196, 196, 0.582);
 
-    margin: 5vh auto 10vh 8vw;
+    margin: 10vh auto 10vh 8vw;
 }
 .bookListPageTitleBlack {
     color: rgba(204, 204, 204, 0.795);

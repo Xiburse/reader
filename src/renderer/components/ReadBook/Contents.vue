@@ -40,7 +40,6 @@ export default {
         },
         contentsReturnButtonClick: function () {
             UpdateReadingBook.save(this.nid, this.iframeSrc, remote.getGlobal("iframeOptions").b)
-            console.log(remote.getGlobal("iframeOptions").b)
             this.$router.push({ name: "Page" })
         },
 

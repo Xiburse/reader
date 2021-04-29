@@ -141,7 +141,7 @@ export default {
     color: rgba(48, 48, 48, 0.795);
     text-shadow: 2px 2px 10px rgba(196, 196, 196, 0.582);
 
-    margin: 5vh auto 10vh 8vw;
+    margin: 10vh auto 10vh 8vw;
 }
 .settingsPageTitleBlack {
     color: rgba(215, 215, 216, 0.699);
@@ -151,7 +151,7 @@ export default {
 .settingsRoundButton {
     position: fixed;
 
-    transition: 0.4s cubic-bezier(0.8, 0.01, 0.49, 1);
+    transition: 0.4s cubic-bezier(0.01, 0.94, 0.28, 0.98);
     z-index: 1000;
 }
 
@@ -173,15 +173,15 @@ export default {
     background-color: rgba(61, 61, 61, 0.11);
 
     color: rgba(49, 49, 49, 0.733);
-    box-shadow: 0px 4px 20px rgba(95, 95, 95, 0.096);
+    box-shadow: 0px 0px 20px rgba(95, 95, 95, 0.096);
     text-shadow: 2px 2px 5px rgba(100, 100, 100, 0.274);
     margin-bottom: 10vh;
 }
 .settingsOptionsColumnBlack {
     background-color: rgba(255, 255, 255, 0.2);
     color: rgba(201, 201, 201, 0.733);
-    box-shadow: 0px 4px 10px rgba(173, 173, 173, 0.24);
-    text-shadow: 2px 2px 5px rgba(167, 167, 167, 0.274);
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+    text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.1);
 }
 .settingsOptionsColumnTitle {
     margin-bottom: 6vh;
