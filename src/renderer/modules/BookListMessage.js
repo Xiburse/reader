@@ -6,6 +6,7 @@ import { nanoid } from "nanoid"
 import store from "../store/index"
 import globalBus from "./globalBus"
 import vue from "../main"
+import UpdateReadingBook from "./UpdateReadingBook"
 
 var BookListMessage = {
     getBookList: function () {
@@ -43,6 +44,7 @@ var BookListMessage = {
         }
         bookList.write("utf-8", JSON.stringify(bookListJson))
 
+        UpdateReadingBook.deleteReadingBook(nid)
         File.deleteBook(remote.getGlobal("cachePath") + "\\" + nid)
     }
 }

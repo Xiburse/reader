@@ -16,6 +16,19 @@ export default {
 
         reading.write("utf-8", JSON.stringify(readingBookJson))
     },
+    deleteReadingBook: function (nid) {
+        var reading = new File(remote.getGlobal("optionsPath") + "\\reading.json")
+
+        var readingBookJson = JSON.parse(reading.readString("utf-8"))
+        for(var i = 0; i < readingBookJson.readingBook.length; i++) {
+            if(readingBookJson.readingBook[i].nid == nid) {
+                readingBookJson.readingBook.splice(i, 1)
+                break
+            }
+        }
+        
+        reading.write("utf-8", JSON.stringify(readingBookJson))
+    },
     save: function (nid, src, b) {
         var reading = new File(remote.getGlobal("optionsPath") + "\\reading.json")
 

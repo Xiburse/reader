@@ -166,7 +166,7 @@ export default {
         })
 
         document.onclick = function () {
-            if (_this.sideBarClass == "sideBar") {
+            if (_this.sideBarClass == "sideBar" && _this.$route.path == "/page") {
                 _this.roundButtonClick()
                 _this.$refs.roundButton.buttonClick()
             }

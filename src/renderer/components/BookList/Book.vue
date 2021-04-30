@@ -223,7 +223,6 @@ export default {
     background-color: rgba(32, 32, 32, 0);
     width: 100%;
     height: 100%;
-    transform: scale3d(1.05, 1.05, 1);
 }
 
 .aboutTextBox,

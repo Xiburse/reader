@@ -63,12 +63,12 @@ export default {
         nextButtonClick: function () {
             var list = this.list.list
             var i = 0
-            for(i = 0; i < list.length; i++) {
-                if(this.iframeSrc.indexOf(list[i].path) != -1) {
+            for (i = 0; i < list.length; i++) {
+                if (this.iframeSrc.indexOf(list[i].path) != -1) {
                     break
                 }
             }
-            if(i < list.length - 1) {
+            if (i < list.length - 1) {
                 globalBus.$emit("setIframeSrc", list[i + 1].path)
             }
 
@@ -120,7 +120,6 @@ export default {
         var _this = this
         globalBus.$on("setIframeSrc", (src) => {
             this.iframeSrc = "file:///" + remote.getGlobal("cachePath").replace(/\\/g, "/") + "/" + this.nid + "/OEBPS/" + src
-            console.log(this.iframeSrc)
         })
 
         const bti = this.$refs.bookTextIframe
@@ -129,8 +128,13 @@ export default {
             var b = bti
 
             b.insertCSS(`
+            * {
+                ${_this.$store.state.ifBlack ? "background-color: rgb(0, 0, 0) !important;" : ""}
+                ${_this.$store.state.ifBlack ? "color: rgb(255, 255, 255) !important;" : ""}
+            }
             body {
-                ${_this.$store.state.ifBlack ? "background-color: rgb(0, 0, 0);" : ""}
+                margin-left: 10vw !important;
+                margin-right: 10vw !important;
             }
             ::-webkit-scrollbar {
                 width: 5px;
@@ -147,16 +151,13 @@ export default {
             }
             img {
                 width: 80vw;
-                margin-left: 10vw;
                 display: block;
                 object-fit: cover;
                 position: relative;
                 pointer-events: none;
             }
             p, h1, h2, h3, h4, h5, h6, li {
-                ${_this.$store.state.ifBlack ? "color: rgb(255, 255, 255);" : ""}
-                margin-left: 10vw !important;
-                margin-right: 10vw !important;
+                
             }
             *::selection {
                 background-color: rgba(56, 56, 56, 0.788);
@@ -167,7 +168,7 @@ export default {
 
         bti.addEventListener("dom-ready", function () {
             var b = bti
-            // b.openDevTools()
+            b.openDevTools()
 
             b.executeJavaScript(`
                 const remote = require("electron").remote;
