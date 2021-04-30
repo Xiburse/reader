@@ -1,5 +1,6 @@
 <template>
-    <div id="app" :class="appClass">
+    <div id="app"
+         :class="appClass">
         <div class="toolButtons">
             <span class="closeWindow"
                   @mouseenter="closeWindowMouseEnter"
@@ -33,6 +34,15 @@
                 </transition>
             </span>
         </div>
+        <div class="moreMessagesBox">
+            <transition-group name="moreMessageTran"
+                              tag="div">
+                <more-message v-for="mes in messagesArray"
+                              :key="mes[0].id"
+                              :messages="mes"
+                              class="moreMessages"></more-message>
+            </transition-group>
+        </div>
         <router-view ref="main"></router-view>
     </div>
 </template>
@@ -40,9 +50,14 @@
 <script>
 import store from "./store/index"
 import { ipcRenderer, remote } from "electron"
+import MoreMessage from "./MoreMessage.vue"
+import globalBus from "./modules/globalBus"
 
 export default {
     name: 'epub-reader',
+    components: {
+        MoreMessage
+    },
     methods: {
         closeWindowMouseEnter: function () {
             this.closeWindowLogoClass = "closeWindowLogoHover"
@@ -127,7 +142,9 @@ export default {
             hiddenWindowLogoClass: "hiddenWindowLogo",
             hiddenWindowLogoSrc: "static/hidden.svg",
             hiddenWindowIf: false,
-            hiddenWindowIfEnter: false
+            hiddenWindowIfEnter: false,
+
+            messagesArray: []
         }
     },
     created: function () {
@@ -140,7 +157,18 @@ export default {
             _t.maxWindowLogoSrc = "static/maximize.svg"
         })
 
-        
+        globalBus.$on("addMoreMessage", (messagesArray) => {
+            _t.messagesArray.push(messagesArray)
+        })
+        globalBus.$on("deleteMoreMessage", (nid) => {
+            var i = 0
+            for (i = 0; i < _t.messagesArray.length; i++) {
+                if (_t.messagesArray[i][0].id == nid) {
+                    break
+                }
+            }
+            _t.messagesArray.splice(i, 1)
+        })
     }
 }
 </script>
@@ -256,6 +284,17 @@ body {
 .hiddenWindowLogoHover {
 }
 
+.moreMessagesBox {
+    position: fixed;
+    top: 3vh;
+    left: 25vw;
+    z-index: 500;
+}
+.moreMessages {
+    transition: 0.4s cubic-bezier(0.01, 0.94, 0.28, 0.98);
+    margin-top: 10px;
+}
+
 .toolButtonsTran-enter,
 .toolButtonsTran-leave-to {
     opacity: 0;
@@ -263,5 +302,18 @@ body {
 .toolButtonsTran-enter-active,
 .toolButtonsTran-leave-active {
     transition: opacity 0.4s;
+}
+
+.moreMessageTran-enter {
+    opacity: 0;
+    transform: translateY(50px);
+}
+.moreMessageTran-leave-to {
+    opacity: 0;
+    transform: translateY(-50px);
+}
+.moreMessageTran-enter-active,
+.moreMessageTran-leave-active {
+    position: absolute;
 }
 </style>

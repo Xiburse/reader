@@ -46,6 +46,7 @@
 
 <script>
 import { remote } from "electron"
+import { nanoid } from "nanoid"
 import ExpandRoundButton from "./ExpandRoundButton.vue"
 import BookListMessage from '@/modules/BookListMessage'
 import globalBus from "@/modules/globalBus"
@@ -83,6 +84,7 @@ export default {
         bookBoxClickRight: function () {
             this.ifExpandRoundButton = true
             this.bookCoverStyle.transform = "scale(1.2, 1.2)"
+            this.bookCoverStyle.filter = "brightness(50%)"
         },
         deleteBookClick: function (e) {
             e.stopPropagation()
@@ -90,9 +92,13 @@ export default {
         },
         moreBookClick: function (e) {
             e.stopPropagation()
-            this.$store.commit("setPublicBookMessage", this.list)
-            this.$store.commit("setPublicBookMessageIfShow", true)
-            document.body.style.overflow = "hidden"
+            // this.$store.commit("setPublicBookMessage", this.list)
+            // this.$store.commit("setPublicBookMessageIfShow", true)
+            // document.body.style.overflow = "hidden"
+            var a = new Array()
+            a.push({id: nanoid(), text: this.list.content.message.title})
+            a.push({id: nanoid(), text: this.list.content.message.author})
+            globalBus.$emit("addMoreMessage", a)
         }
     },
     props: {
@@ -173,6 +179,7 @@ export default {
 
 .bookCoverBox,
 .bookCoverBoxBlack {
+    position: relative;
     transition: 0.4s;
     overflow: hidden;
     display: inline-block;
@@ -208,12 +215,12 @@ export default {
 }
 
 .expandBox {
-    position: relative;
+    position: absolute;
     display: table;
-    top: -100%;
+    top: -0%;
     left: 0%;
-    backdrop-filter: saturate(200%);
-    background-color: rgba(32, 32, 32, 0.815);
+    /* backdrop-filter: saturate(200%); */
+    background-color: rgba(32, 32, 32, 0);
     width: 100%;
     height: 100%;
     transform: scale3d(1.05, 1.05, 1);
@@ -262,12 +269,12 @@ export default {
 .expandRoundButtonTran-leave-to .moreBookClass {
     opacity: 0;
     /* transform: scale3d(1.5, 1.5, 1); */
-    transform: translate3d(0px, 100px, 0px);
+    top: 200px;
 }
 
 .expandRoundButtonTran-enter .deleteBookClass,
 .expandRoundButtonTran-leave-to .deleteBookClass {
     opacity: 0;
-    transform: translate3d(0px, 200px, 0px);
+    top: 100px;
 }
 </style>
