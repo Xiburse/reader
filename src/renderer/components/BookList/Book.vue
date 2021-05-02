@@ -95,10 +95,16 @@ export default {
             // this.$store.commit("setPublicBookMessage", this.list)
             // this.$store.commit("setPublicBookMessageIfShow", true)
             // document.body.style.overflow = "hidden"
-            var a = new Array()
-            a.push({id: nanoid(), text: this.list.content.message.title})
-            a.push({id: nanoid(), text: this.list.content.message.author})
-            globalBus.$emit("addMoreMessage", a)
+            if (!this.ifMoreBookClick) {
+                var a = new Array()
+                a.push({ id: nanoid(), text: this.list.content.message.title })
+                a.push({ id: nanoid(), text: this.list.content.message.author })
+                globalBus.$emit("addMoreMessage", a)
+                this.ifMoreBookClick = true
+                setTimeout(() => {
+                    this.ifMoreBookClick = false
+                }, 3000);
+            }
         }
     },
     props: {
@@ -148,7 +154,9 @@ export default {
             titleTextBoxStyle: {
                 fontSize: this.width / 8 + "px"
             },
-            authorTextBoxStyle: {}
+            authorTextBoxStyle: {},
+
+            ifMoreBookClick: false
         }
     },
     created: function () { },

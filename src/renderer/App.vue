@@ -293,6 +293,7 @@ body {
 .moreMessages {
     transition: 0.4s cubic-bezier(0.01, 0.94, 0.28, 0.98);
     margin-top: 10px;
+    /* border: 1px solid rgba(255, 255, 255, 0.267); */
 }
 
 .toolButtonsTran-enter,

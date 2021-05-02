@@ -19,7 +19,8 @@
                 <public-book-message class="publicBookMessage"
                                      v-if="$store.state.publicBookMessage.ifShow"></public-book-message>
             </transition>
-            <div :class="bookListPageTitleClass">书&nbsp;籍</div>
+            <div :class="bookListPageTitleClass"
+                 :style="bookListPageTitleStyle">书&nbsp;籍</div>
             <transition-group name="bookListTran">
                 <book v-for="list in bookList"
                       :key="list.id"
@@ -59,6 +60,10 @@ export default {
         },
         bookListPageTitleClass: function () {
             return "bookListPageTitle" + (this.$store.state.ifBlack ? "Black" : "")
+        },
+
+        bookModNumber: function () {
+            return this.$store.state.bookModNumber
         }
     },
     methods: {
@@ -131,6 +136,10 @@ export default {
 
             bookStyle: {
                 margin: ""
+            },
+
+            bookListPageTitleStyle: {
+                marginLeft: this.$store.state.bookModNumber == 0 ? "20px" : "10vh"
             }
         };
     },
@@ -152,12 +161,12 @@ export default {
         })
         globalBus.$on("exchange", (nid) => {
             var i = 0
-            for(i = 0; i < _this.bookList.length; i++) {
-                if(_this.bookList[i].id == nid) {
+            for (i = 0; i < _this.bookList.length; i++) {
+                if (_this.bookList[i].id == nid) {
                     break
                 }
             }
-            if(i != 0) {
+            if (i != 0) {
                 var z = _this.bookList[i]
                 _this.bookList[i] = _this.bookList[0]
                 _this.bookList[0] = z
@@ -242,7 +251,7 @@ export default {
 .bookListPageTitleBlack {
     font-family: "fc", "qk";
     font-weight: 900;
-    font-size: 10vh;
+    font-size: 50px;
     color: rgba(48, 48, 48, 0.795);
     text-shadow: 2px 2px 10px rgba(196, 196, 196, 0.582);
 

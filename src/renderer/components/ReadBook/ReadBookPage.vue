@@ -168,7 +168,7 @@ export default {
 
         bti.addEventListener("dom-ready", function () {
             var b = bti
-            b.openDevTools()
+            // b.openDevTools()
 
             b.executeJavaScript(`
                 const remote = require("electron").remote;
